@@ -1,0 +1,201 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.3.7">
+  <diagram id="10wW5-hduFYjNpdP70Ap" name="Página-1">
+    <mxGraphModel dx="1314" dy="1798" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="entrada_zone" parent="1" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeDasharray=5 5;fontStyle=1;fontColor=#ffffff;strokeColor=#6F0000;" value="Inicialización del sistema" vertex="1">
+          <mxGeometry height="300" width="300" x="50" y="-90" as="geometry" />
+        </mxCell>
+        <mxCell id="sensor_entrada" parent="entrada_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Gestión de camaras" vertex="1">
+          <mxGeometry height="40" width="100" x="100" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="dispensador_ticket" parent="entrada_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Mapeo de cámaras con plazas" vertex="1">
+          <mxGeometry height="50" width="120" x="90" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-3" edge="1" parent="entrada_zone" source="5Lz3Maz--B_bPcCjL9ux-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sensor_entrada">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-6" edge="1" parent="entrada_zone" source="5Lz3Maz--B_bPcCjL9ux-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5Lz3Maz--B_bPcCjL9ux-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-2" parent="entrada_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Gestión de Usuarios" vertex="1">
+          <mxGeometry height="40" width="100" x="100" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-5" parent="entrada_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Gestión de aparcamiento" vertex="1">
+          <mxGeometry height="40" width="100" x="100" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="aparcamiento_zone" parent="1" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeDasharray=5 5;fontStyle=1;fontColor=#ffffff;strokeColor=#006EAF;" value="Inicio del sistema y Bucle principal" vertex="1">
+          <mxGeometry height="570" width="300" x="50" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-13" edge="1" parent="aparcamiento_zone" source="sensores_plaza" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="pantalla_guiado">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="149.83333333333348" y="139.99999999999977" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sensores_plaza" parent="aparcamiento_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Inicio del sistema.&lt;div&gt;Funcion de inicio&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="120" x="90" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-15" edge="1" parent="aparcamiento_zone" source="pantalla_guiado" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5Lz3Maz--B_bPcCjL9ux-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pantalla_guiado" parent="aparcamiento_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Adquisición de Frames" vertex="1">
+          <mxGeometry height="50" width="120" x="90" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-17" edge="1" parent="aparcamiento_zone" source="5Lz3Maz--B_bPcCjL9ux-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5Lz3Maz--B_bPcCjL9ux-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-14" parent="aparcamiento_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Preprocesamiento de imagenes" vertex="1">
+          <mxGeometry height="50" width="120" x="90" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-19" edge="1" parent="aparcamiento_zone" source="5Lz3Maz--B_bPcCjL9ux-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5Lz3Maz--B_bPcCjL9ux-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-16" parent="aparcamiento_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Procesamiento de imagenes. Reconocimiento y mapeado" vertex="1">
+          <mxGeometry height="70" width="120" x="90" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-22" edge="1" parent="aparcamiento_zone" source="5Lz3Maz--B_bPcCjL9ux-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5Lz3Maz--B_bPcCjL9ux-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-32" edge="1" parent="aparcamiento_zone" source="5Lz3Maz--B_bPcCjL9ux-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5Lz3Maz--B_bPcCjL9ux-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-18" parent="aparcamiento_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Gestion de errores de reconocimiento" vertex="1">
+          <mxGeometry height="50" width="120" x="90" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-24" edge="1" parent="aparcamiento_zone" source="5Lz3Maz--B_bPcCjL9ux-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="pantalla_guiado">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="525" />
+              <mxPoint x="40" y="155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-26" edge="1" parent="aparcamiento_zone" source="5Lz3Maz--B_bPcCjL9ux-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="525" />
+            </Array>
+            <mxPoint x="490" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-21" parent="aparcamiento_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Telemetría y rendimiento" vertex="1">
+          <mxGeometry height="50" width="120" x="90" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="salida_zone" parent="1" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;strokeDasharray=5 5;fontStyle=1;fontColor=#ffffff;strokeColor=#005700;" value="Salida" vertex="1">
+          <mxGeometry height="150" width="300" x="50" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="sensor_salida" parent="salida_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Presentación" vertex="1">
+          <mxGeometry height="40" width="100" x="100" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-25" edge="1" parent="1" source="estacion_monitoreo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="sensor_salida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sistema_central_zone" parent="1" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeDasharray=5 5;fontStyle=1;fontColor=#000000;strokeColor=#BD7000;" value="Sistema Central" vertex="1">
+          <mxGeometry height="400" width="300" x="580" y="-90" as="geometry" />
+        </mxCell>
+        <mxCell id="servidor_control" parent="sistema_central_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Servidor de Control" vertex="1">
+          <mxGeometry height="80" width="150" x="75" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="base_datos" parent="sistema_central_zone" style="shape=datastore;whiteSpace=wrap;html=1;" value="Base de Datos" vertex="1">
+          <mxGeometry height="80" width="150" x="75" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="estacion_monitoreo" parent="sistema_central_zone" style="rounded=0;whiteSpace=wrap;html=1;" value="Estación de Monitoreo / UI" vertex="1">
+          <mxGeometry height="70" width="150" x="75" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="conn_sensor_dispenser" edge="1" parent="1" source="sensor_entrada" style="endArrow=classic;html=1;rounded=0;" target="dispensador_ticket" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="120" as="sourcePoint" />
+            <mxPoint x="170" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn_server_db" edge="1" parent="1" source="servidor_control" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="base_datos" value="Almacenamiento / Consulta">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="550" y="320" as="sourcePoint" />
+            <mxPoint x="550" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn_server_ui" edge="1" parent="1" source="servidor_control" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="estacion_monitoreo" value="Monitorización / Control">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="550" y="320" as="sourcePoint" />
+            <mxPoint x="550" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-7" edge="1" parent="1" source="5Lz3Maz--B_bPcCjL9ux-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="servidor_control">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-27" connectable="0" parent="5Lz3Maz--B_bPcCjL9ux-7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Creacion de Administrador/Operador" vertex="1">
+          <mxGeometry relative="1" x="-0.1406" y="-2" as="geometry">
+            <mxPoint x="26" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-8" edge="1" parent="1" source="5Lz3Maz--B_bPcCjL9ux-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="servidor_control">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="20" />
+              <mxPoint x="453" y="20" />
+              <mxPoint x="453" />
+            </Array>
+            <mxPoint x="655" y="3" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-28" connectable="0" parent="5Lz3Maz--B_bPcCjL9ux-8" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Creacion de aparcamiento,&amp;nbsp;&lt;div&gt;una zona y plazas&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.3527" y="1" as="geometry">
+            <mxPoint x="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-9" edge="1" parent="1" source="sensor_entrada" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="servidor_control">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="80" />
+              <mxPoint x="470" y="80" />
+              <mxPoint x="470" y="20" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-29" connectable="0" parent="5Lz3Maz--B_bPcCjL9ux-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Creacion de un minimo&amp;nbsp;&lt;div&gt;de una camara&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.3794" y="3" as="geometry">
+            <mxPoint x="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-10" edge="1" parent="1" source="dispensador_ticket" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="servidor_control">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="153" />
+              <mxPoint x="480" y="40" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-30" connectable="0" parent="5Lz3Maz--B_bPcCjL9ux-10" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Relacionar plazas&amp;nbsp;&lt;div&gt;con areas de imagenes&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.4958" as="geometry">
+            <mxPoint x="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-12" edge="1" parent="1" source="dispensador_ticket" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sensores_plaza">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-20" edge="1" parent="1" source="5Lz3Maz--B_bPcCjL9ux-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="servidor_control">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="700" />
+              <mxPoint x="825" y="700" />
+              <mxPoint x="825" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-23" edge="1" parent="1" source="5Lz3Maz--B_bPcCjL9ux-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sensor_salida">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5Lz3Maz--B_bPcCjL9ux-31" edge="1" parent="1" source="sensor_salida" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="servidor_control">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="980" />
+              <mxPoint x="860" y="20" />
+            </Array>
+            <mxPoint x="850" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
