@@ -1,0 +1,1267 @@
+\documentclass[12pt,a4paper]{article}
+
+% Castellano
+\usepackage[spanish,es-tabla]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{placeins}
+
+% Añadidos por mi
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+
+\RequirePackage{booktabs}
+\RequirePackage[table]{xcolor}
+\RequirePackage{xtab}
+\RequirePackage{multirow}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{longtable}
+
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setlist[enumerate]{noitemsep, topsep=0pt}
+\setstretch{1.15}
+
+% Comando opcional para simular "Capítulo"
+\newcommand{\capitulo}[2]{%
+	\section*{Capítulo #1. #2}%
+}
+
+% Si el texto viene de Pandoc o Markdown
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}%
+	\setlength{\parskip}{0pt}%
+}
+
+% Si en tu texto usas \apendice pero no existe definido
+\newcommand{\apendice}[1]{%
+	\clearpage
+	\appendix
+	\section{#1}%
+}
+
+\begin{document}
+	
+	\apendice{Especificación de Requisitos}
+	
+	\section{Introducción}
+	
+	En este apéndice se recogen los requisitos del sistema y su descomposición funcional.
+	Primero se presenta la tabla resumen de requisitos.
+	Después se describen los casos de uso asociados mediante una estructura jerárquica que facilita la trazabilidad del sistema.
+	
+	\section{Objetivos generales}
+	
+	El objetivo de esta especificación es definir de forma clara y estructurada el conjunto de capacidades funcionales y restricciones generales que debe cumplir el sistema de gestión de aparcamientos inteligente.
+	Esta definición servirá como base para el diseño, desarrollo y validación de la solución.
+	
+	\section{Catálogo de requisitos}
+	
+	\subsection{D.1 Tabla resumen de requisitos}
+	
+	\subsubsection{Resumen requisitos generales}
+	
+	\begin{itemize}
+		\item RF-1. Conectividad con dispositivos de percepción
+		\item RF-2. Dashboards de control, monitorización y visualización del sistema
+		\item RF-3. Procesamiento y análisis de imágenes
+		\item RF-4. Definición del área del aparcamiento
+		\item RF-5. Reconocimiento de plazas libres y ocupadas
+		\item RF-6. Generación de notificaciones y alertas
+		\item RF-7. Aplicación web
+		\item RF-8. Integración con sistemas externos
+		\item RF-9. Gestión de usuarios y roles
+		\item RF-10. Registro histórico y análisis de datos
+		\item RF-11. Seguridad y privacidad de datos
+	\end{itemize}
+	
+	\subsubsection{Tabla de requisitos generales}
+	
+	\begin{longtable}{p{0.14\columnwidth} p{0.82\columnwidth}}
+		\caption{Tabla de requisitos generales.}\label{tab:requisitos-generales}\\
+		\toprule
+		\textbf{ID} & \textbf{Descripción} \\
+		\toprule
+		\endfirsthead
+		
+		\toprule
+		\textbf{ID} & \textbf{Descripción} \\
+		\toprule
+		\endhead
+		
+		RF-1 & Conectividad con dispositivos de percepción. El sistema será capaz de utilizar cámaras para el sistema, el cual podrá capturar datos y objetos del entorno físico en tiempo casi real. Las cámaras y el sistema creado se comportaran como sensores de captación del entorno. Y deberá poder añadir nuevas cámaras al sistema posteriormente. \\
+		\midrule
+		RF-2 & Dashboards de control, monitorización y visualización del sistema. Deberá incluir paneles de control (dashboards) del sistema y que entre otros controles de configuración permitan visualizar en tiempo casi real los datos e imágenes de las cámaras. \\
+		\midrule
+		RF-3 & Procesamiento y análisis de imágenes. Sera capaz de procesar las imágenes capturadas para identificar eventos del aparcamiento además de vehículos, personas y otros objetos. La identificación de personas será filtrada en la misma cámara según la política de protección de datos y debe tener la característica de 'privacy mask'. \\
+		\midrule
+		RF-4 & Definición del área del aparcamiento. Debe permitir definir el área de trabajo (zona del parking) mediante la incorporación al sistema de un fichero dxf proporcionado por el gestor del aparcamiento con medidas reales urbanísticas. \\
+		\midrule
+		RF-5 & Reconocimiento de plazas libres y ocupadas. El sistema será capaz de reconocer en el aparcamiento las plazas libres y ocupadas en el momento actual. \\
+		\midrule
+		RF-6 & Generación de notificaciones y alertas. El sistema debe generar notificaciones y alertas al detectar que una plaza de aparcamiento queda libre o es ocupada por un vehículo. \\
+		\midrule
+		RF-7 & Aplicación web. Debe tener una aplicación web con acceso a través de internet donde un usuario registrado y autorizado podrá ver las plazas libres u ocupadas en tiempo casi real del aparcamiento, siendo este el fin principal del sistema. \\
+		\midrule
+		RF-8 & Integración con sistemas externos. Sera capaz de integrarse con otros sistemas de gestión, plataformas, sistemas de tráfico o aplicaciones web o móviles. \\
+		\midrule
+		RF-9 & Gestión de usuarios y roles. El sistema debe permitir la autenticación, autorización y gestión de roles con distintos niveles de acceso. \\
+		\midrule
+		RF-10 & Registro histórico y análisis de datos. Debe almacenar datos históricos de eventos del sistema, de cámaras e imágenes, objetos reconocidos, y ofrecer opciones de consulta, filtrado y análisis para su auditoría. \\
+		\midrule
+		RF-11 & Seguridad y privacidad de datos. El sistema debe gestionar los datos captados cumpliendo normativas de privacidad y ofrecer anonimización a estos datos. \\
+		\bottomrule
+	\end{longtable}
+	
+	\FloatBarrier
+	
+	\subsubsection{Descomposición de requisitos funcionales}
+	
+	\begin{itemize}
+		\item \textbf{F0. Gestión de aparcamiento}
+		\item \textbf{F1. Gestión de usuarios del núcleo}
+		\begin{itemize}
+			\item F1.1 Mantenimiento de administradores
+			\begin{itemize}
+				\item F1.1.1 Alta nuevo administrador
+				\item F1.1.2 Edición/Borrado de administrador
+			\end{itemize}
+			\item F1.2 Listados de administradores
+			\item F1.3 Mantenimiento de usuarios del núcleo
+			\begin{itemize}
+				\item F1.3.1 Alta nuevo usuario del núcleo
+				\item F1.3.2 Edición/Borrado de usuario del núcleo
+			\end{itemize}
+			\item F1.4 Listados de usuarios del núcleo
+		\end{itemize}
+		\item \textbf{F2. Gestión de cámaras del sistema}
+		\begin{itemize}
+			\item F2.1 Mantenimiento de cámaras
+			\begin{itemize}
+				\item F2.1.1 Alta de cámara
+				\item F2.1.2 Edición/Borrado de cámara
+			\end{itemize}
+			\item F2.2 Listados de cámara
+		\end{itemize}
+		\item \textbf{F3. Gestión de imágenes}
+		\begin{itemize}
+			\item F3.1 Mantenimiento de imágenes
+			\begin{itemize}
+				\item F3.1.1 Captura de imagen
+				\item F3.1.2 Registro nueva imagen
+				\item F3.1.3 Edición/Borrado de imagen
+			\end{itemize}
+			\item F3.2 Listados de imágenes
+		\end{itemize}
+		\item \textbf{F4. Gestión de objetos físicos}
+		\begin{itemize}
+			\item F4.1 Mantenimiento de objetos físicos
+			\begin{itemize}
+				\item F4.1.1 Captura de objetos físicos (procesado de DXF)
+				\item F4.1.2 Registro nuevo objeto físico
+				\item F4.1.3 Edición/Borrado de objetos físicos
+			\end{itemize}
+			\item F4.2 Listados de objetos físicos
+		\end{itemize}
+		\item \textbf{F5. Gestión del procesamiento de imágenes y reconocimiento de objetos}
+		\begin{itemize}
+			\item F5.1 Mantenimiento del procesamiento y reconocimiento
+			\begin{itemize}
+				\item F5.1.1 Procesamiento de la imagen
+				\item F5.1.2 Registro nuevo objeto reconocido
+				\item F5.1.3 Edición/Borrado de objetos
+				\item F5.1.4 Mapeado de objetos reconocidos
+				\item F5.1.5 Asignación de objetos reconocidos y objetos físicos
+			\end{itemize}
+			\item F5.2 Listados de objetos reconocidos
+		\end{itemize}
+		\item \textbf{F6. Gestión de API}
+		\begin{itemize}
+			\item F6.1 Mantenimiento de reglas
+			\begin{itemize}
+				\item F6.1.1 Registro nueva regla
+				\item F6.1.2 Edición/Borrado de reglas
+			\end{itemize}
+			\item F6.2 Listados de reglas
+			\item F6.3 Mantenimiento de alertas
+			\begin{itemize}
+				\item F6.3.1 Registro nueva alerta
+				\item F6.3.2 Edición/Borrado de alertas
+			\end{itemize}
+			\item F6.4 Listados de alertas
+		\end{itemize}
+		\item \textbf{F7. Gestión de la aplicación web}
+		\begin{itemize}
+			\item F7.1 Mantenimiento de usuarios de la aplicación
+			\begin{itemize}
+				\item F7.1.1 Alta nuevo usuario de la aplicación
+				\item F7.1.2 Edición/Borrado de usuario de la aplicación
+			\end{itemize}
+			\item F7.2 Listados de usuarios de la aplicación
+			\item F7.3 Gestión de solicitudes a la API
+			\begin{itemize}
+				\item F7.3.1 Mantenimiento de solicitudes
+				\begin{itemize}
+					\item F7.3.1.1 Creación de solicitud
+					\item F7.3.1.2 Procesado de datos obtenidos desde solicitud
+				\end{itemize}
+				\item F7.3.2 Gestión de datos obtenidos
+			\end{itemize}
+		\end{itemize}
+		\item \textbf{F8. Gestión de la privacidad y protección de datos}
+	\end{itemize}
+	
+	\clearpage
+	
+	\subsection{Especificación de requisitos}
+	
+	\subsubsection{CU-F0. Gestión de aparcamiento}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F0. Gestión de aparcamiento}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-4, RF-5, RF-6, F0 \\
+			\textbf{Descripción} & Permite gestionar el aparcamiento como elemento central del sistema, incluyendo el área de trabajo, el estado de las plazas y los eventos asociados. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y el sistema debe disponer de la configuración básica del aparcamiento. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de gestión de aparcamiento.
+					\item El sistema muestra la información disponible del aparcamiento.
+					\item El usuario consulta el estado general del aparcamiento.
+					\item El sistema actualiza y muestra los datos asociados al área y a las plazas.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La información del aparcamiento queda disponible para su visualización y gestión. \\
+			\textbf{Excepciones} & Información no disponible, configuración incompleta o error de acceso. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F1.1.1. Alta nuevo administrador}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F1.1.1. Alta nuevo administrador}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-9, F1, F1.1, F1.1.1 \\
+			\textbf{Descripción} & Permite registrar un nuevo administrador en el sistema del núcleo. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de administración. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de administración de usuarios.
+					\item Selecciona la opción de alta de nuevo administrador.
+					\item Introduce los datos obligatorios del administrador.
+					\item El sistema valida la información introducida.
+					\item El sistema registra el nuevo administrador.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El nuevo administrador queda almacenado y disponible en el sistema. \\
+			\textbf{Excepciones} & Datos obligatorios incompletos, permisos insuficientes o error de validación. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F1.1.2. Edición/Borrado de administrador}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F1.1.2. Edición/Borrado de administrador}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-9, F1, F1.1, F1.1.2 \\
+			\textbf{Descripción} & Permite modificar o eliminar un administrador existente en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de administración. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de administradores.
+					\item Selecciona un administrador existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El administrador queda actualizado o eliminado según la acción realizada. \\
+			\textbf{Excepciones} & Registro no encontrado, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F1.2. Listados de administradores}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F1.2. Listados de administradores}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-9, F1, F1.2 \\
+			\textbf{Descripción} & Permite consultar el listado de administradores registrados en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de administradores.
+					\item El sistema recupera los administradores registrados.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de administradores queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen administradores, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F1.3.1. Alta nuevo usuario del núcleo}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F1.3.1. Alta nuevo usuario del núcleo}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-9, F1, F1.3, F1.3.1 \\
+			\textbf{Descripción} & Permite registrar un nuevo usuario del núcleo en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de administración. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de usuarios del núcleo.
+					\item Selecciona la opción de alta de nuevo usuario.
+					\item Introduce los datos obligatorios.
+					\item El sistema valida la información.
+					\item El sistema registra el nuevo usuario.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El nuevo usuario del núcleo queda almacenado y disponible. \\
+			\textbf{Excepciones} & Datos incompletos, permisos insuficientes o error de validación. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F1.3.2. Edición/Borrado de usuario del núcleo}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F1.3.2. Edición/Borrado de usuario del núcleo}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-9, F1, F1.3, F1.3.2 \\
+			\textbf{Descripción} & Permite modificar o eliminar un usuario del núcleo existente. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de administración. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de usuarios del núcleo.
+					\item Selecciona un usuario existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El usuario del núcleo queda actualizado o eliminado. \\
+			\textbf{Excepciones} & Registro no encontrado, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F1.4. Listados de usuarios del núcleo}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F1.4. Listados de usuarios del núcleo}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-9, F1, F1.4 \\
+			\textbf{Descripción} & Permite consultar el listado de usuarios del núcleo registrados. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de usuarios del núcleo.
+					\item El sistema recupera los usuarios registrados.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de usuarios del núcleo queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen usuarios, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F2.1.1. Alta de cámara}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F2.1.1. Alta de cámara}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-1, F2, F2.1, F2.1.1 \\
+			\textbf{Descripción} & Permite registrar una nueva cámara en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de gestión de cámaras. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de cámaras.
+					\item Selecciona la opción de alta de cámara.
+					\item Introduce la configuración de la cámara.
+					\item El sistema valida la conexión y los datos.
+					\item El sistema registra la nueva cámara.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La cámara queda disponible para la captura de datos en el sistema. \\
+			\textbf{Excepciones} & Datos de conexión incorrectos, cámara inaccesible o permisos insuficientes. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F2.1.2. Edición/Borrado de cámara}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F2.1.2. Edición/Borrado de cámara}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-1, F2, F2.1, F2.1.2 \\
+			\textbf{Descripción} & Permite modificar o eliminar una cámara existente en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de gestión de cámaras. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de cámaras.
+					\item Selecciona una cámara existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La cámara queda actualizada o eliminada según la acción realizada. \\
+			\textbf{Excepciones} & Registro no encontrado, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F2.2. Listados de cámara}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F2.2. Listados de cámara}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-1, F2, F2.2 \\
+			\textbf{Descripción} & Permite consultar el listado de cámaras registradas en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de cámaras.
+					\item El sistema recupera las cámaras registradas.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de cámaras queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen cámaras, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	
+	
+	\subsubsection{CU-F3.1.1. Captura de imagen}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F3.1.1. Captura de imagen}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-1, RF-3, F3, F3.1, F3.1.1 \\
+			\textbf{Descripción} & Permite obtener una imagen desde una cámara del sistema. \\
+			\textbf{Precondición} & La cámara debe estar activa y correctamente conectada. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El sistema solicita una captura a la cámara.
+					\item La cámara envía la imagen al núcleo.
+					\item El sistema almacena la imagen capturada.
+					\item El sistema deja la imagen disponible para su análisis posterior.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La imagen queda registrada en el sistema. \\
+			\textbf{Excepciones} & Error de conexión, cámara no disponible o fallo en la captura. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F3.1.2. Registro nueva imagen}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F3.1.2. Registro nueva imagen}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, F3, F3.1, F3.1.2 \\
+			\textbf{Descripción} & Permite registrar una nueva imagen en el sistema para su almacenamiento y posterior análisis. \\
+			\textbf{Precondición} & Debe existir una imagen capturada o disponible para su registro. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de imágenes.
+					\item Selecciona la opción de registro de imagen.
+					\item El sistema valida la imagen recibida.
+					\item El sistema almacena la nueva imagen.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La imagen queda registrada en el sistema. \\
+			\textbf{Excepciones} & Imagen inválida, fallo de almacenamiento o permisos insuficientes. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F3.1.3. Edición/Borrado de imagen}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F3.1.3. Edición/Borrado de imagen}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, F3, F3.1, F3.1.3 \\
+			\textbf{Descripción} & Permite modificar o eliminar una imagen existente en el sistema. \\
+			\textbf{Precondición} & Debe existir una imagen previamente registrada. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de imágenes.
+					\item Selecciona una imagen existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La imagen queda actualizada o eliminada según la acción realizada. \\
+			\textbf{Excepciones} & Imagen no encontrada, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F3.2. Listados de imágenes}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F3.2. Listados de imágenes}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, F3, F3.2 \\
+			\textbf{Descripción} & Permite consultar el listado de imágenes registradas en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de imágenes.
+					\item El sistema recupera las imágenes registradas.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de imágenes queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen imágenes, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F4.1.1. Captura de objetos físicos (procesado de DXF)}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F4.1.1. Captura de objetos físicos (procesado de DXF)}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-4, F4, F4.1, F4.1.1 \\
+			\textbf{Descripción} & Permite obtener y registrar los objetos físicos definidos a partir del fichero DXF del área del aparcamiento. \\
+			\textbf{Precondición} & Debe existir un fichero DXF válido del área del aparcamiento. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario carga el fichero DXF en el sistema.
+					\item El sistema procesa la información geométrica.
+					\item El sistema identifica los objetos físicos del aparcamiento.
+					\item El sistema registra los objetos físicos extraídos.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & Los objetos físicos quedan almacenados en el sistema. \\
+			\textbf{Excepciones} & Fichero inválido, error de lectura o error de procesamiento. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F4.1.2. Registro nuevo objeto físico}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F4.1.2. Registro nuevo objeto físico}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-4, F4, F4.1, F4.1.2 \\
+			\textbf{Descripción} & Permite registrar un nuevo objeto físico identificado en el área del aparcamiento. \\
+			\textbf{Precondición} & Debe existir un objeto físico detectado previamente o derivado del procesado del DXF. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario selecciona un objeto físico detectado.
+					\item El sistema valida la información del objeto.
+					\item El sistema registra el nuevo objeto físico.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El objeto físico queda almacenado y disponible para futuras asociaciones. \\
+			\textbf{Excepciones} & Objeto no reconocido, datos incompletos o error de registro. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F4.1.3. Edición/Borrado de objetos físicos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F4.1.3. Edición/Borrado de objetos físicos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-4, F4, F4.1, F4.1.3 \\
+			\textbf{Descripción} & Permite modificar o eliminar un objeto físico existente en el sistema. \\
+			\textbf{Precondición} & Debe existir un objeto físico previamente registrado. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de objetos físicos.
+					\item Selecciona un objeto físico existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El objeto físico queda actualizado o eliminado según la acción realizada. \\
+			\textbf{Excepciones} & Objeto no encontrado, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	
+	\subsubsection{CU-F4.2. Listados de objetos físicos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F4.2. Listados de objetos físicos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-4, F4, F4.2 \\
+			\textbf{Descripción} & Permite consultar el listado de objetos físicos registrados en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de objetos físicos.
+					\item El sistema recupera los objetos físicos registrados.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de objetos físicos queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen objetos físicos, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F5.1.1. Procesamiento de la imagen}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F5.1.1. Procesamiento de la imagen}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, RF-5, F5, F5.1, F5.1.1 \\
+			\textbf{Descripción} & Permite procesar una imagen capturada para identificar objetos y plazas ocupadas o libres. \\
+			\textbf{Precondición} & Debe existir una imagen previamente capturada y una configuración de reconocimiento válida. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El sistema recibe la imagen capturada.
+					\item Ejecuta el motor de reconocimiento.
+					\item Identifica vehículos, objetos y personas según la política configurada.
+					\item Determina el estado de las plazas.
+					\item Registra los resultados del procesamiento.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & Los objetos reconocidos y el estado de las plazas quedan almacenados en el sistema. \\
+			\textbf{Excepciones} & Imagen no válida, fallo del motor de reconocimiento o configuración incorrecta. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F5.1.2. Registro nuevo objeto reconocido}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F5.1.2. Registro nuevo objeto reconocido}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, RF-5, F5, F5.1, F5.1.2 \\
+			\textbf{Descripción} & Permite registrar un nuevo objeto reconocido a partir del procesamiento de imágenes. \\
+			\textbf{Precondición} & Debe existir un objeto detectado por el motor de reconocimiento. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El sistema identifica un objeto durante el procesamiento.
+					\item El usuario valida el objeto reconocido.
+					\item El sistema registra el nuevo objeto reconocido.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El objeto reconocido queda almacenado en el sistema. \\
+			\textbf{Excepciones} & Objeto no válido, error de identificación o fallo de registro. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F5.1.3. Edición/Borrado de objetos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F5.1.3. Edición/Borrado de objetos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, RF-5, F5, F5.1, F5.1.3 \\
+			\textbf{Descripción} & Permite modificar o eliminar objetos reconocidos existentes en el sistema. \\
+			\textbf{Precondición} & Debe existir un objeto reconocido previamente registrado. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de objetos reconocidos.
+					\item Selecciona un objeto existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El objeto reconocido queda actualizado o eliminado según la acción realizada. \\
+			\textbf{Excepciones} & Objeto no encontrado, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F5.1.4. Mapeado de objetos reconocidos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F5.1.4. Mapeado de objetos reconocidos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, RF-5, F5, F5.1, F5.1.4 \\
+			\textbf{Descripción} & Permite asociar los objetos reconocidos con las referencias internas del sistema. \\
+			\textbf{Precondición} & Deben existir objetos reconocidos previamente detectados. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El sistema dispone de objetos reconocidos.
+					\item El usuario asigna correspondencias internas.
+					\item El sistema guarda el mapeado realizado.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & Los objetos reconocidos quedan mapeados en el sistema. \\
+			\textbf{Excepciones} & Correspondencia inválida, datos inconsistentes o fallo de registro. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F5.1.5. Asignación de objetos reconocidos y objetos físicos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F5.1.5. Asignación de objetos reconocidos y objetos físicos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, RF-5, F5, F5.1, F5.1.5 \\
+			\textbf{Descripción} & Permite vincular los objetos reconocidos con los objetos físicos definidos en el sistema. \\
+			\textbf{Precondición} & Deben existir objetos reconocidos y objetos físicos registrados. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de asignación.
+					\item Selecciona un objeto reconocido y un objeto físico.
+					\item El sistema valida la correspondencia.
+					\item El sistema guarda la asignación realizada.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & Los objetos reconocidos quedan asociados a los objetos físicos correspondientes. \\
+			\textbf{Excepciones} & Correspondencia inválida, objetos no encontrados o fallo de validación. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F5.2. Listados de objetos reconocidos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F5.2. Listados de objetos reconocidos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-3, RF-5, F5, F5.2 \\
+			\textbf{Descripción} & Permite consultar el listado de objetos reconocidos en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de objetos reconocidos.
+					\item El sistema recupera los objetos reconocidos.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de objetos reconocidos queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen objetos reconocidos, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F6.1.1. Registro nueva regla}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F6.1.1. Registro nueva regla}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-8, F6, F6.1, F6.1.1 \\
+			\textbf{Descripción} & Permite crear una nueva regla de negocio en la plataforma. \\
+			\textbf{Precondición} & El usuario debe tener permisos de gestión de reglas. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de reglas.
+					\item Selecciona la opción de crear nueva regla.
+					\item Introduce las condiciones y acciones de la regla.
+					\item El sistema valida la sintaxis y coherencia de la regla.
+					\item El sistema registra la nueva regla.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La regla queda disponible para su ejecución por el motor lógico. \\
+			\textbf{Excepciones} & Error de validación, sintaxis incorrecta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F6.1.2. Edición/Borrado de reglas}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F6.1.2. Edición/Borrado de reglas}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-8, F6, F6.1, F6.1.2 \\
+			\textbf{Descripción} & Permite modificar o eliminar reglas existentes en el sistema. \\
+			\textbf{Precondición} & Debe existir una regla previamente registrada y el usuario debe tener permisos de gestión. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de reglas.
+					\item Selecciona una regla existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La regla queda actualizada o eliminada según la acción realizada. \\
+			\textbf{Excepciones} & Regla no encontrada, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F6.2. Listados de reglas}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F6.2. Listados de reglas}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-8, F6, F6.2 \\
+			\textbf{Descripción} & Permite consultar el listado de reglas registradas en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de reglas.
+					\item El sistema recupera las reglas registradas.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de reglas queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen reglas, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F6.3.1. Registro nueva alerta}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F6.3.1. Registro nueva alerta}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-6, F6, F6.3, F6.3.1 \\
+			\textbf{Descripción} & Permite crear una nueva alerta asociada a eventos del sistema. \\
+			\textbf{Precondición} & El usuario debe tener permisos de gestión de alertas. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de alertas.
+					\item Selecciona la opción de crear nueva alerta.
+					\item Introduce las condiciones de disparo y notificación.
+					\item El sistema valida la alerta.
+					\item El sistema registra la nueva alerta.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La alerta queda disponible para su uso por el sistema. \\
+			\textbf{Excepciones} & Datos inválidos, error de validación o permisos insuficientes. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F6.3.2. Edición/Borrado de alertas}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F6.3.2. Edición/Borrado de alertas}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-6, F6, F6.3, F6.3.2 \\
+			\textbf{Descripción} & Permite modificar o eliminar alertas existentes en el sistema. \\
+			\textbf{Precondición} & Debe existir una alerta previamente registrada y el usuario debe tener permisos de gestión. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de alertas.
+					\item Selecciona una alerta existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La alerta queda actualizada o eliminada según la acción realizada. \\
+			\textbf{Excepciones} & Alerta no encontrada, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F6.4. Listados de alertas}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F6.4. Listados de alertas}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-6, F6, F6.4 \\
+			\textbf{Descripción} & Permite consultar el listado de alertas registradas en el sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de alertas.
+					\item El sistema recupera las alertas registradas.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de alertas queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen alertas, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	\subsubsection{CU-F7.1.1. Alta nuevo usuario de la aplicación}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F7.1.1. Alta nuevo usuario de la aplicación}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-7, RF-9, F7, F7.1, F7.1.1 \\
+			\textbf{Descripción} & Permite registrar un nuevo usuario de la aplicación web. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de administración. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de usuarios de la aplicación.
+					\item Selecciona la opción de alta de nuevo usuario.
+					\item Introduce los datos obligatorios.
+					\item El sistema valida la información introducida.
+					\item El sistema registra el nuevo usuario.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El nuevo usuario de la aplicación queda almacenado y disponible. \\
+			\textbf{Excepciones} & Datos incompletos, permisos insuficientes o error de validación. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F7.1.2. Edición/Borrado de usuario de la aplicación}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F7.1.2. Edición/Borrado de usuario de la aplicación}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-7, RF-9, F7, F7.1, F7.1.2 \\
+			\textbf{Descripción} & Permite modificar o eliminar un usuario de la aplicación web existente. \\
+			\textbf{Precondición} & Debe existir un usuario previamente registrado y el usuario debe tener permisos de administración. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al listado de usuarios de la aplicación.
+					\item Selecciona un usuario existente.
+					\item Elige la opción de edición o borrado.
+					\item El sistema valida la operación solicitada.
+					\item El sistema actualiza o elimina el registro.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El usuario de la aplicación queda actualizado o eliminado según la acción realizada. \\
+			\textbf{Excepciones} & Usuario no encontrado, permisos insuficientes o error en la operación solicitada. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F7.2. Listados de usuarios de la aplicación}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F7.2. Listados de usuarios de la aplicación}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-7, RF-9, F7, F7.2 \\
+			\textbf{Descripción} & Permite consultar el listado de usuarios registrados en la aplicación web. \\
+			\textbf{Precondición} & El usuario debe estar autenticado y disponer de permisos de consulta. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de usuarios de la aplicación.
+					\item El sistema recupera los usuarios registrados.
+					\item El sistema muestra el listado disponible.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & El listado de usuarios de la aplicación queda visible para el usuario. \\
+			\textbf{Excepciones} & No existen usuarios, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F7.3.1.1. Creación de solicitud}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F7.3.1.1. Creación de solicitud}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-8, F7, F7.3, F7.3.1, F7.3.1.1 \\
+			\textbf{Descripción} & Permite generar una solicitud desde la aplicación web hacia la API del sistema. \\
+			\textbf{Precondición} & El usuario debe estar autenticado en la aplicación web. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede a la aplicación web.
+					\item Selecciona la opción de realizar una solicitud.
+					\item Introduce los parámetros necesarios.
+					\item El sistema envía la solicitud a la API.
+					\item El sistema registra la solicitud creada.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La solicitud queda enviada y registrada para su seguimiento posterior. \\
+			\textbf{Excepciones} & Parámetros inválidos, fallo de comunicación con la API o sesión no válida. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F7.3.1.2. Procesado de datos obtenidos desde solicitud}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F7.3.1.2. Procesado de datos obtenidos desde solicitud}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-8, F7, F7.3, F7.3.1, F7.3.1.2 \\
+			\textbf{Descripción} & Permite procesar los datos obtenidos tras realizar una solicitud a la API. \\
+			\textbf{Precondición} & Debe existir una solicitud previamente creada y una respuesta válida de la API. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El sistema recibe la respuesta de la API.
+					\item El sistema valida el contenido recibido.
+					\item El sistema procesa y estructura los datos obtenidos.
+					\item El sistema almacena o muestra la información procesada.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & Los datos de la solicitud quedan procesados y disponibles para su uso. \\
+			\textbf{Excepciones} & Respuesta inválida, error de procesado o fallo de comunicación. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F7.3.2. Gestión de datos obtenidos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F7.3.2. Gestión de datos obtenidos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-8, F7, F7.3, F7.3.2 \\
+			\textbf{Descripción} & Permite consultar, organizar y gestionar los datos obtenidos desde la API. \\
+			\textbf{Precondición} & Deben existir datos previamente obtenidos y procesados. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El usuario accede al módulo de datos obtenidos.
+					\item El sistema muestra la información almacenada.
+					\item El usuario consulta o gestiona los datos disponibles.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & Los datos obtenidos quedan organizados y disponibles para su uso. \\
+			\textbf{Excepciones} & No existen datos, error de consulta o permisos insuficientes. \\
+			\textbf{Importancia} & Media \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	\subsubsection{CU-F8. Gestión de la privacidad y protección de datos}
+	
+	\begin{center}
+		\begin{tabularx}{\linewidth}{p{0.23\columnwidth} >{\raggedright\arraybackslash}X}
+			\toprule
+			\multicolumn{2}{c}{\textbf{CU-F8. Gestión de la privacidad y protección de datos}} \\
+			\toprule
+			\textbf{Versión} & 1.0 \\
+			\textbf{Autor} & Alumno \\
+			\textbf{Requisitos asociados} & RF-11, F8 \\
+			\textbf{Descripción} & Permite aplicar políticas de privacidad, anonimización y protección de datos sobre la información captada por el sistema. \\
+			\textbf{Precondición} & Debe existir información captada o almacenada susceptible de tratamiento. \\
+			\textbf{Acciones} &
+			\begin{minipage}[t]{\linewidth}
+				\begin{enumerate}
+					\item El sistema identifica datos sensibles en imágenes o registros.
+					\item Aplica las políticas de anonimización definidas.
+					\item El sistema almacena o muestra únicamente la información permitida.
+					\item El sistema mantiene el cumplimiento de la política de privacidad configurada.
+				\end{enumerate}
+			\end{minipage} \\
+			\textbf{Postcondición} & La información sensible queda protegida conforme a la política del sistema. \\
+			\textbf{Excepciones} & Datos no anonimizable, fallo de política o error de procesamiento. \\
+			\textbf{Importancia} & Alta \\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+	
+	
+	
+	
+\end{document}
