@@ -1,0 +1,182 @@
+\documentclass[12pt,a4paper]{article}
+
+% Castellano
+\usepackage[spanish,es-tabla]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % Scalable font
+\usepackage{microtype}
+\usepackage{placeins}
+
+% Añadidos por mi
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{array}
+
+\RequirePackage{booktabs}
+\RequirePackage[table]{xcolor}
+\RequirePackage{xtab}
+\RequirePackage{multirow}
+
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setstretch{1.15}
+
+% Contador de capítulo para numeración prefijada
+\newcounter{chapter}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+
+% Comando para simular "Capítulo"
+\newcommand{\capitulo}[2]{%
+	\setcounter{chapter}{#1}%
+	\setcounter{section}{0}%
+	\section*{Capítulo #1. #2}%
+}
+
+% Comando para imágenes
+\newcommand{\imagen}[3]{%
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=#3\textwidth]{#1}
+		\caption{#2}\label{fig:#1}
+	\end{figure}
+	\FloatBarrier
+}
+
+\begin{document}
+
+\capitulo{3}{Conceptos teóricos}
+
+Sintetizo en este documento las materias que me parecen necesarias para el dominio de conocimiento del proyecto. Se recogen los fundamentos sobre los que se asienta el sistema, explicados de forma que cualquier lector pueda comprender la filosofía del proyecto, prescindiendo de tecnicismos innecesarios.
+
+\section{Secciones}
+
+\subsection{El sistema como conjunto: tres bloques fundamentales}
+
+El sistema se divide en tres grandes bloques que trabajan de forma coordinada: el bloque de percepción [Núcleo (Core)--Ojo], el bloque lógico (Las Reglas) y el bloque de ejecución (Las Acciones). Cada uno tiene una misión clara y puede mejorarse de forma independiente sin afectar a los demás. Esta separación permite que el sistema sea flexible, escalable y aplicable a múltiples sectores más allá de la gestión de aparcamientos.
+
+\subsection{El bloque de percepción: «El Núcleo»}
+
+El primer bloque es el encargado de traducir el mundo físico a datos que un ordenador pueda entender. Utiliza cámaras IP para capturar imágenes del entorno y extraer de ellas información estructurada. Cada cámara se conecta al sistema a través de la red, y es el sistema quien le solicita capturas fotográficas cada cierto intervalo de tiempo. Una vez obtenida la imagen, se procesa mediante algoritmos propios y técnicas de visión artificial para determinar, por ejemplo en el caso de aplicación elegido, si hay un vehículo en una plaza o si está libre.
+
+Además de las cámaras, el sistema necesita conocer la disposición física de los elementos existentes, en el caso elegido las plazas del aparcamiento. Esta información se obtiene a partir de un plano técnico en formato DXF, que contiene la definición geométrica de cada elemento dibujado en el DXF, concretamente en nuestro caso las plazas como un polígono con sus coordenadas en el plano bidimensional XY y su punto central (en adelante el centroide). El sistema lee ese plano, lo procesa y almacena cada elemento o plaza para saber en todo momento qué lugar del espacio corresponde a cada uno.
+
+Todo este proceso respeta la privacidad: las imágenes se procesan al instante, no se almacenan de forma permanente sin necesidad y nunca se muestran al usuario final. El sistema no identifica personas ni matrículas; su único objetivo es detectar la presencia o ausencia de elementos, vehículos en las plazas.
+
+\subsection{El bloque lógico: «Las Reglas»}
+
+Los datos sin contexto son solo números. El bloque lógico es el encargado de dar sentido a los datos que genera el bloque de percepción. Funciona como un conjunto de reglas del tipo «SI ocurre esto, ENTONCES haz esto otro», escritas en un lenguaje cercano al natural. Por ejemplo:
+
+\begin{itemize}
+	\item SI una plaza cambia de ocupada a libre ENTONCES actualizar el panel web.
+	\item SI la ocupación total supera el 90\,\% ENTONCES enviar una alerta al administrador.
+	\item SI una cámara lleva más de cinco minutos sin responder ENTONCES marcarla como averiada.
+\end{itemize}
+
+Este enfoque separa la complejidad técnica de la toma de decisiones: el operador no necesita saber cómo funciona la visión artificial, solo definir qué quiere que ocurra en cada situación. Las reglas pueden combinarse, establecer umbrales de tiempo o priorizarse entre sí, lo que permite abordar escenarios muy diversos sin modificar el núcleo del sistema.
+
+\subsection{El bloque de ejecución: «Las Acciones»}
+
+De nada sirve percibir y razonar si al final no se actúa. El bloque de ejecución materializa las decisiones del bloque lógico en acciones concretas. La más inmediata es la actualización de algún panel o aplicación web: cuando una plaza cambia de estado, el sistema guarda esa información y actualiza las reglas lanzando las correspondientes alertas que serán recogidas o solicitadas por algún panel o aplicación web. Así una interfaz grafica se actualiza para mostrar en tiempo real qué elementos plazas están libres y cuáles ocupadas.
+
+Otras acciones incluyen el envío de notificaciones y alertas (correo electrónico, mensajes en la aplicación), la generación de informes o la integración con sistemas externos, como centros de control de tráfico o aplicaciones de guiado para conductores. Este bloque es el puente entre el mundo digital del sistema y el mundo físico del usuario. Aunque en este proyecto no se intente ir mas lejos, lo dejamos planteado.
+
+\subsection{Cómo encajan las piezas: el ciclo completo}
+
+EN el caso concreto del aparcamiento: una cámara captura una imagen y la envía al sistema. El bloque de percepción la procesa y determina qué vehículos hay y en qué plazas se encuentran. Estos datos pasan al bloque lógico, que aplica las reglas definidas por el administrador y genera órdenes de actualización. El bloque de ejecución recibe esas órdenes y actualiza el panel web, pudiendo además enviar alertas si es necesario. Todo el proceso, desde la captura hasta la visualización, ocurre en cuestión de segundos y se repite de forma continua.
+
+\subsection{Privacidad y protección de datos}
+
+Las imágenes se procesan en el momento de la captura y no se almacenan de forma permanente a menos que sea imprescindible. El usuario final solo ve un mapa abstracto con plazas coloreadas según su estado. Los administradores pueden acceder a las imágenes bajo control y con registro de acceso. El sistema no identifica personas ni matrículas, cumpliendo así con la normativa de protección de datos y generando confianza en los usuarios del servicio.
+
+\section{Referencias}
+
+\emph{Pendiente de completar referencias bibliográficas y recursos utilizados durante el desarrollo del proyecto.}
+
+\section{Imágenes}
+
+Se pueden incluir imágenes con los comandos estándar de \LaTeX, pero esta plantilla dispone de comandos propios como por ejemplo el siguiente:
+
+\begin{verbatim}
+\imagen{nombre_archivo}{Descripción de la imagen}{0.7}
+\end{verbatim}
+
+A continuación se incluye el diagrama de componentes del sistema:
+
+\imagen{Diagrama_De_Componentes}{Diagrama de componentes del sistema}{0.85}
+
+\section{Listas de items}
+
+A continuación se enumeran los módulos funcionales del sistema, que constituyen la descomposición en la que se basa el desarrollo del proyecto:
+
+\begin{itemize}
+	\item \textbf{Gestión de aparcamiento.} Define el área de trabajo del sistema a partir de planos DXF y gestiona el estado general del aparcamiento.
+	\item \textbf{Gestión de usuarios del núcleo.} Permite administrar los usuarios que operan el sistema (administradores y operadores), con distintos niveles de acceso y permisos.
+	\item \textbf{Gestión de cámaras del sistema.} Registra, configura y supervisa las cámaras IP que capturan las imágenes del aparcamiento.
+	\item \textbf{Gestión de imágenes.} Almacena y gestiona las imágenes capturadas, tanto las originales como las procesadas, con distintos niveles de privacidad.
+	\item \textbf{Gestión de objetos físicos (zonas).} Define los elementos físicos del aparcamiento (plazas, calzadas, aceras, entradas, salidas) a partir del procesado de planos DXF.
+	\item \textbf{Gestión del procesamiento y reconocimiento.} Ejecuta los algoritmos de visión artificial sobre las imágenes capturadas para identificar vehículos y determinar el estado de ocupación de cada plaza.
+	\item \textbf{Gestión de reglas y alertas.} Permite definir reglas de negocio del tipo «SI condición ENTONCES acción» y gestionar las alertas generadas por su ejecución.
+	\item \textbf{Gestión de la aplicación web.} Proporciona la interfaz de usuario para la visualización del estado del aparcamiento, así como la API REST para la integración con sistemas externos.
+	\item \textbf{F8. Gestión de la privacidad y protección de datos.} Implementa las políticas de economización, control de acceso y retención de datos para cumplir con la normativa de protección de datos.
+\end{itemize}
+
+Además de los módulos funcionales, es necesario comprender los siguientes conceptos técnicos empleados a lo largo del proyecto:
+
+\begin{itemize}
+	\item \textbf{Coordenadas.} Sistema de referencia bidimensional (X, Y) utilizado para definir la posición de cada elemento en el plano del aparcamiento. Cada plaza se representa como un conjunto de vértices con sus coordenadas, formando un polígono cerrado.
+	\item \textbf{DXF (Drawing Exchange Format).} Formato de archivo técnico de intercambio desarrollado por Autodesk. Contiene la definición geométrica del aparcamiento estructurada por capas: plazas, calzadas, aceras, entradas y salidas, en el caso aplicado de un aparcamiento.
+	\item \textbf{Centroide.} Punto central de un polígono, calculado como la media aritmética de las coordenadas de todos sus vértices. Se utiliza para ubicar rápidamente cada plaza en el plano y asociarla con los objetos detectados en las imágenes.
+	\item \textbf{Inicialización del sistema.} Proceso de configuración inicial que incluye la definición del aparcamiento, el registro de cámaras, la importación del plano DXF, la creación de usuarios administradores y el mapeo de plazas.
+	\item \textbf{Captura (repetida en bucle).} Mecanismo por el cual el sistema solicita imágenes a cada cámara de forma periódica y continua mediante hilos de ejecución independientes, permitiendo la monitorización en tiempo casi real del aparcamiento.
+	\item \textbf{ISAPI (Internet Server Application Programming Interface).} Protocolo estándar de comunicación con cámaras IP de vigilancia. Se utiliza para solicitar una imagen fija a la cámara mediante autenticación HTTP Digest.
+	\item \textbf{Mapeo de plazas.} Proceso de asociación entre las plazas definidas en el plano DXF y su posición visible en las imágenes de cada cámara, permitiendo correlacionar el mundo físico con el mundo digital.
+	\item \textbf{Preprocesamiento de imagen.} Conjunto de operaciones aplicadas a la imagen capturada (normalización de iluminación, redimensionado, filtros) para mejorar la robustez de la detección frente a condiciones cambiantes como sombras, reflejos o climatología adversa.
+	\item \textbf{Autenticación y sesión.} Mecanismo de identificación de usuarios mediante credenciales (usuario y contraseña) que permite controlar el acceso al sistema, distinguir entre administradores y operadores, y mantener la sesión activa durante la navegación.
+	\item \textbf{Anonimización.} Técnica de procesamiento de imágenes que elimina o difumina información identificable, como matrículas o rasgos faciales, garantizando el cumplimiento de la normativa de protección de datos sin impedir la detección de vehículos.
+	\item \textbf{Fusión de datos.} Combinación de la información obtenida por varias cámaras que cubren una misma zona o plaza, permitiendo obtener un estado único y fiable mediante reglas de decisión que evitan duplicados y resuelven discrepancias.
+	\item \textbf{Hilos de ejecución.} Técnica de procesamiento informático donde se procesan distintas acciones a la vez en modo concurrente.
+\end{itemize}
+
+\section{Tablas}
+
+Igualmente se pueden usar los comandos específicos de \LaTeX{} o bien usar alguno de los comandos de la plantilla.
+
+A continuación se presenta la tabla de herramientas y tecnologías utilizadas en cada parte del proyecto, indicando con una «X» en qué ámbito se emplea cada una:
+
+\begin{table}[!h]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{lccccc}
+		\toprule
+		\textbf{Herramienta / Tecnología} & \textbf{Backend Django} & \textbf{Visión Artificial} & \textbf{Procesado DXF} & \textbf{Frontend Web} & \textbf{Memoria} \\
+		\midrule
+		Python 3 & X & X & X & & \\
+		Django 5 & X & & & & \\
+		SQLite & X & & & & \\
+		HTML5 / CSS3 & & & & X & \\
+		Bootstrap 4 & & & & X & \\
+		JavaScript / jQuery & & & & X & \\
+		Ultralytics YOLO & & X & & & \\
+		Pillow / PIL & & X & & & \\
+		ezdxf & & & X & & \\
+		Shapely & & & X & & \\
+		OpenCV & & X & & & \\
+		Requests & X & X & & & \\
+		Watchdog & & X & & & \\
+		Draw.io / diagrams.net & & & & & X \\
+		\LaTeX{} / TeXmaker & & & & & X \\
+		Visual Studio Code & X & X & X & X & X \\
+		Git & X & X & X & X & X \\
+		\bottomrule
+	\end{tabular}
+	}
+	\caption{Herramientas y tecnologías utilizadas en cada parte del proyecto}
+	\label{tab:herramientas}
+\end{table}
+
+\end{document}
