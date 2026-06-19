@@ -1,0 +1,136 @@
+{% load static %}
+{% with request.path as path %}
+
+<details class="sidebar-section" data-section="f1" {% if '/usuarios/' in path or path == '/' %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-users"></i> Usuarios</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="{% url 'usuarios:lista' %}" {% if '/usuarios/lista' in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Usuarios
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'usuarios:crear' %}" {% if '/usuarios/crear' in path %}class="active"{% endif %}>
+                <i class="fas fa-plus-circle"></i> Crear Usuario
+            </a>
+        </li>
+    </ul>
+</details>
+
+<details class="sidebar-section" data-section="f2" {% if '/camaras/' in path %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-video"></i> Cámaras</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="{% url 'camaras:lista' %}" {% if '/camaras/lista' in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Cámaras
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'camaras:crear' %}" {% if '/camaras/crear' in path %}class="active"{% endif %}>
+                <i class="fas fa-plus-circle"></i> Crear Cámara
+            </a>
+        </li>
+    </ul>
+</details>
+
+<details class="sidebar-section" data-section="f3" {% if '/imagenes/' in path %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-images"></i> Imágenes</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="{% url 'imagenes:lista' %}" {% if '/imagenes/' == path or '/imagenes/lista' in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Imágenes
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'imagenes:subir' %}" {% if '/imagenes/subir' in path %}class="active"{% endif %}>
+                <i class="fas fa-upload"></i> Subir Imagen
+            </a>
+        </li>
+    </ul>
+</details>
+
+<details class="sidebar-section" data-section="f4" {% if '/zonas/' in path %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-draw-polygon"></i> Zonas</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href="{% url 'zonas:lista' %}" {% if '/zonas/lista' in path and '/lista_dxf' not in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Zonas
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'zonas:registro' %}" {% if '/zonas/registro' in path %}class="active"{% endif %}>
+                <i class="fas fa-plus-circle"></i> Registrar Zona
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'zonas:lista_dxf' %}" {% if '/zonas/lista_dxf' in path %}class="active"{% endif %}>
+                <i class="fas fa-file-dxf"></i> Archivos DXF
+            </a>
+        </li>
+    </ul>
+</details>
+
+<details class="sidebar-section" data-section="f5" {% if '/reconocimiento/' in path %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-brain"></i> Reconocimiento</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href=" url 'reconocimiento:lista' " {% if '/reconocimiento/lista' in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Objetos
+            </a>
+        </li>
+        <li>
+            <a href=" url 'reconocimiento:estado' " {% if '/reconocimiento/estado' in path %}class="active"{% endif %}>
+                <i class="fas fa-heartbeat"></i> Estado Detección
+            </a>
+        </li>
+        <li>
+            <a href=" url 'reconocimiento:procesamiento' " {% if '/reconocimiento/procesar' in path %}class="active"{% endif %}>
+                <i class="fas fa-cogs"></i> Procesar Imagen
+            </a>
+        </li>
+    </ul>
+</details>
+
+<details class="sidebar-section" data-section="f6" {% if '/alertas/' in path %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-bell"></i> Alertas</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href=" url 'alertas:lista_reglas' " {% if '/alertas/reglas' in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Reglas
+            </a>
+        </li>
+        <li>
+            <a href=" url 'alertas:lista_alertas' " {% if '/alertas/alertas' in path %}class="active"{% endif %}>
+                <i class="fas fa-list"></i> Listado de Alertas
+            </a>
+        </li>
+    </ul>
+</details>
+
+<details class="sidebar-section" data-section="f8" {% if '/privacidad/' in path %}open{% endif %}>
+    <summary class="sidebar-title"><i class="fas fa-shield-alt"></i> Privacidad</summary>
+    <ul class="sidebar-menu">
+        <li>
+            <a href=" url 'privacidad:dashboard' " {% if '/privacidad/dashboard' in path %}class="active"{% endif %}>
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </li>
+        <li>
+            <a href=" url 'privacidad:politicas' " {% if '/privacidad/politicas' in path %}class="active"{% endif %}>
+                <i class="fas fa-file-contract"></i> Políticas
+            </a>
+        </li>
+        <li>
+            <a href=" url 'privacidad:anonimizacion' " {% if '/privacidad/anonimizacion' in path %}class="active"{% endif %}>
+                <i class="fas fa-user-secret"></i> Anonimización
+            </a>
+        </li>
+        <li>
+            <a href=" url 'privacidad:registro_datos' " {% if '/privacidad/registro' in path %}class="active"{% endif %}>
+                <i class="fas fa-list-alt"></i> Registro RGPD
+            </a>
+        </li>
+    </ul>
+</details>
+
+{% endwith %}

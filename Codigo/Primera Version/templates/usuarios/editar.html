@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-user-edit"></i> Editar Cuenta de Administrador</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-user"></i> Datos Personales
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_nombre" class="required">Nombre</label>
+                {{ form.nombre }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_apellidos" class="required">Apellidos</label>
+                {{ form.apellidos }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_email" class="required">Correo Electronico</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_telefono">Telefono</label>
+                {{ form.telefono }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_direccion">Direccion</label>
+                {{ form.direccion }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-key"></i> Credenciales de Acceso
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_login" class="required">Login</label>
+                {{ form.login }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Nueva Contrasena</label>
+                {{ form.nueva_password }}
+                <small style="color: var(--gray);">Dejar en blanco para mantener la actual.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="id_nivel_acceso" class="required">Nivel de Acceso</label>
+                {{ form.nivel_acceso }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_activo">
+                    {{ form.activo }} Usuario Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-info-circle"></i> Informacion Adicional
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_comentarios">Comentarios</label>
+                {{ form.comentarios }}
+            </div>
+            
+            <div class="form-group">
+                <p><i class="fas fa-calendar"></i> Creado: {{ usuario.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                <p><i class="fas fa-clock"></i> Modificado: {{ usuario.fecha_modificacion|date:"d/m/Y H:i" }}</p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Guardar Cambios
+            </button>
+            <a href="{% url 'usuarios:lista' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

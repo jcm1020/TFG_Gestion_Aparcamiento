@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h2 style="margin: 0;"><i class="fas fa-th-large"></i> Dashboard</h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Resumen del sistema de gestion de aparcamiento</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'index' %}" class="btn btn-secondary">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-stat">
+            <div class="dashboard-stat-icon blue">
+                <i class="fas fa-parking"></i>
+            </div>
+            <div class="dashboard-stat-info">
+                <h3>{{ ocupacion|default:"58" }}%</h3>
+                <p>Ocupacion Actual</p>
+            </div>
+        </div>
+        <div class="dashboard-stat">
+            <div class="dashboard-stat-icon green">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="dashboard-stat-info">
+                <h3>{{ camaras_online|default:"8" }}/{{ camaras_total|default:"10" }}</h3>
+                <p>Camaras Online</p>
+            </div>
+        </div>
+        <div class="dashboard-stat">
+            <div class="dashboard-stat-icon orange">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="dashboard-stat-info">
+                <h3>{{ alertas_nuevas|default:"5" }}</h3>
+                <p>Alertas Pendientes</p>
+            </div>
+        </div>
+        <div class="dashboard-stat">
+            <div class="dashboard-stat-icon red">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="dashboard-stat-info">
+                <h3>{{ alertas_criticas|default:"2" }}</h3>
+                <p>Incidentes Criticos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-row" style="margin-top: 20px;">
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3><i class="fas fa-bolt"></i> Accesos Rapidos</h3>
+            </div>
+            <div class="dashboard-card-body">
+                <div class="quick-links">
+                    <a href="{% url 'camaras:crear' %}" class="quick-link">
+                        <i class="fas fa-plus-circle" style="color: #8b5cf6;"></i>
+                        <span>Nueva Camara</span>
+                    </a>
+                    <a href="{% url 'imagenes:subir' %}" class="quick-link">
+                        <i class="fas fa-upload" style="color: #f59e0b;"></i>
+                        <span>Subir Imagen</span>
+                    </a>
+                    <a href="url 'zonas:registro' " class="quick-link">
+                        <i class="fas fa-file-import" style="color: #ec4899;"></i>
+                        <span>Registrar Zona</span>
+                    </a>
+                    <a href="url 'reconocimiento:procesamiento' " class="quick-link">
+                        <i class="fas fa-cogs" style="color: #14b8a6;"></i>
+                        <span>Procesar</span>
+                    </a>
+                    <a href=" url 'alertas:crear_regla' " class="quick-link">
+                        <i class="fas fa-plus" style="color: #f97316;"></i>
+                        <span>Nueva Regla</span>
+                    </a>
+                    <a href=" url 'privacidad:anonimizacion' " class="quick-link">
+                        <i class="fas fa-user-secret" style="color: #64748b;"></i>
+                        <span>Anonimizar</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3><i class="fas fa-robot"></i> Sistema de Deteccion</h3>
+            </div>
+            <div class="dashboard-card-body">
+                <div class="quick-links">
+                    <a href=" url 'zonas:inicializar' " class="quick-link">
+                        <i class="fas fa-file-import" style="color: #6366f1;"></i>
+                        <span>Inicializar Sistema</span>
+                    </a>
+                    <a href=" url 'reconocimiento:iniciar' " class="quick-link">
+                        <i class="fas fa-play" style="color: #10b981;"></i>
+                        <span>Iniciar Deteccion</span>
+                    </a>
+                    {% if en_ejecucion %}
+                    <a href=" url 'reconocimiento:iniciar' " class="quick-link">
+                        <i class="fas fa-stop" style="color: #ef4444;"></i>
+                        <span>Ir a Detener Deteccion</span>
+                    </a>
+                    {% endif %}
+                    <a href=" url 'reconocimiento:estado' " class="quick-link">
+                        <i class="fas fa-info-circle" style="color: #f59e0b;"></i>
+                        <span>Ver Estado</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="dashboard-card-header">
+            <h3><i class="fas fa-puzzle-piece"></i> Modulos del Sistema</h3>
+        </div>
+        <div class="dashboard-card-body">
+            <div class="modules-overview">
+                <a href="{% url 'usuarios:lista' %}" class="module-overview-card">
+                    <div class="icon" style="background: var(--primary);">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h4>F1 - Usuarios</h4>
+                    <p>{{ usuarios_count|default:"5" }} administradores</p>
+                </a>
+                <a href="{% url 'camaras:lista' %}" class="module-overview-card">
+                    <div class="icon" style="background: #8b5cf6;">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h4>F2 - Camaras</h4>
+                    <p>{{ camaras_total|default:"10" }} camaras</p>
+                </a>
+                <a href="{% url 'imagenes:lista' %}" class="module-overview-card">
+                    <div class="icon" style="background: #f59e0b;">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h4>F3 - Imagenes</h4>
+                    <p>{{ imagenes_count|default:"156" }} imagenes</p>
+                </a>
+                <a href=" url 'zonas:lista' " class="module-overview-card">
+                    <div class="icon" style="background: #ec4899;">
+                        <i class="fas fa-draw-polygon"></i>
+                    </div>
+                    <h4>F4 - Objetos</h4>
+                    <p>{{ plazas_totales|default:"48" }} objetos</p>
+                </a>
+                <a href=" url 'reconocimiento:lista' " class="module-overview-card">
+                    <div class="icon" style="background: #14b8a6;">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>F5 - Procesamiento</h4>
+                    <p>{{ objetos_reconocidos|default:"342" }} objetos</p>
+                </a>
+                <a href=" url 'alertas:lista_reglas' " class="module-overview-card">
+                    <div class="icon" style="background: #f97316;">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h4>F6 - API</h4>
+                    <p>{{ reglas_activas|default:"12" }} reglas activas</p>
+                </a>
+                <a href="#" class="module-overview-card">
+                    <div class="icon" style="background: var(--success);">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h4>F7 - Web</h4>
+                    <p>Aplicacion publica</p>
+                </a>
+                <a href=" url 'privacidad:dashboard' " class="module-overview-card">
+                    <div class="icon" style="background: #64748b;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>F8 - Privacidad</h4>
+                    <p>RGPD activo</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-row">
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3><i class="fas fa-chart-pie"></i> Estado del Parking</h3>
+            </div>
+            <div class="dashboard-card-body">
+                <div style="text-align: center; padding: 20px 0;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--success) 0deg {{ ocupacion|default:"58" }}deg, var(--border) {{ ocupacion|default:"58" }}deg 360deg); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 90px; height: 90px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                            <span style="font-size: 24px; font-weight: bold; color: var(--success);">{{ ocupacion|default:"58" }}%</span>
+                            <span style="font-size: 10px; color: var(--gray);">Ocupado</span>
+                        </div>
+                    </div>
+                    <p style="margin: 0; color: var(--gray); font-size: 14px;">
+                        <span style="color: var(--success);">{{ plazas_libres|default:"42" }}</span> plazas libres de <span style="color: var(--dark);">{{ plazas_totales|default:"100" }}</span> totales
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3><i class="fas fa-clock"></i> Actividad Reciente</h3>
+                <a href="#">Ver todo</a>
+            </div>
+            <div class="dashboard-card-body">
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background: var(--success);">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="activity-content">
+                            <strong>Vehiculo detectado en Plaza A-05</strong>
+                            <p>Reconocimiento automatico completado</p>
+                        </div>
+                        <span class="activity-time">Hace 5 min</span>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background: var(--primary);">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="activity-content">
+                            <strong>Imagen capturada por Camara Entrada</strong>
+                            <p>Procesamiento iniciado automaticamente</p>
+                        </div>
+                        <span class="activity-time">Hace 12 min</span>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background: #f59e0b;">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="activity-content">
+                            <strong>Alerta: Ocupacion al {{ ocupacion|default:"58" }}%</strong>
+                            <p>Regla "Ocupacion Critica" ejecutada</p>
+                        </div>
+                        <span class="activity-time">Hace 1 hora</span>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background: var(--danger);">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <strong>Nuevo usuario registrado</strong>
+                            <p>Sesion iniciada en el sistema</p>
+                        </div>
+                        <span class="activity-time">Hoy</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-row">
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3><i class="fas fa-exclamation-circle"></i> Alertas Recientes</h3>
+                <a href=" url 'alertas:lista_alertas' ">Ver todas</a>
+            </div>
+            <div class="dashboard-card-body">
+                <ul class="alert-list">
+                    {% if alertas_recientes %}
+                        {% for alerta in alertas_recientes %}
+                        <li class="alert-item  if alerta.prioridad == 'critica' critical elif alerta.prioridad == 'alta' warning else info endif ">
+                            <i class="fas  if alerta.tipo_alerta == 'seguridad' fa-shield-alt elif alerta.tipo_alerta == 'sistema' fa-server else fa-bell endif "></i>
+                            <div class="alert-content">
+                                <strong>{{ alerta.titulo }}</strong>
+                                <p>{{ alerta.mensaje|truncatechars:50 }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="alert-item info">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="alert-content">
+                                <strong>Sin alertas recientes</strong>
+                                <p>El sistema funciona correctamente</p>
+                            </div>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

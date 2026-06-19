@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block login_content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fas fa-user-plus"></i>
+            <h1>Crear Cuenta</h1>
+            <p>Registrate para acceder al sistema</p>
+        </div>
+        
+		{% if form.errors %}
+		<div class="alert alert-danger">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+		
+		{% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+		
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_nombre" class="required">Nombre</label>
+                {{ form.nombre }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_apellidos" class="required">Apellidos</label>
+                {{ form.apellidos }}
+            </div>
+			
+			<div class="form-group">
+                <label for="id_login" class="required">Usuario de login</label>
+                {{ form.login }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_email" class="required">Correo Electronico</label>
+                {{ form.email }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_telefono">Telefono</label>
+                {{ form.telefono }}
+            </div>           
+            
+            <div class="form-group">
+                <label for="id_password1" class="required">Contrasena</label>
+                {{ form.password1 }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password2" class="required">Confirmar Contrasena</label>
+                {{ form.password2 }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-user-plus"></i> Crear Cuenta
+            </button>
+        </form>
+        
+        <div class="login-footer">
+            <p>Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesion</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 450px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header i {
+    font-size: 48px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.login-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.login-header p {
+    color: var(--gray);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--gray);
+}
+
+.login-footer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+</style>
+{% endblock %}

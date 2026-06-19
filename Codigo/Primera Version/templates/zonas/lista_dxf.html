@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Archivos DXF{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h2 style="margin: 0;"><i class="fas fa-file-dxf"></i> Archivos DXF</h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Gestiona los archivos DXF del parking</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'zonas:registrar_dxf' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Subir DXF
+            </a>
+            <a href="{% url 'zonas:lista' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver a Zonas
+            </a>
+        </div>
+    </div>
+
+    {% if dxf_files %}
+    <div class="cards-grid">
+        {% for dxf in dxf_files %}
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon card-icon-{% if dxf.activo %}success{% else %}primary{% endif %}">
+                        <i class="fas fa-file-code"></i>
+                    </div>
+                    {{ dxf.nombre }}
+                </div>
+                <span class="status-{% if dxf.activo %}online{% else %}offline{% endif %}">
+                    {% if dxf.activo %}Activo{% else %}Inactivo{% endif %}
+                </span>
+            </div>
+            <div class="card-meta">
+                <p><i class="fas fa-ruler"></i> Escala: {{ dxf.escala|default:"-" }}</p>
+                <p><i class="fas fa-ruler-horizontal"></i> {{ dxf.get_unidad_medida_display }}</p>
+                <p><i class="fas fa-info-circle"></i> Estado: {{ dxf.get_estado_display }}</p>
+                <p><i class="fas fa-calendar"></i> {{ dxf.fecha_creacion|date:"d/m/Y H:i" }}</p>
+            </div>
+            <div class="card-footer">
+                <div class="actions">
+                    {% if not dxf.activo %}
+                    <form method="post" action="{% url 'zonas:activar_dxf' dxf.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success" title="Activar">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if dxf.estado == 'pendiente' and dxf.activo %}
+                    <a href="{% url 'zonas:debug_dxf' dxf.id %}" class="btn btn-primary" title="Procesar">
+                        <i class="fas fa-cogs"></i>
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'zonas:eliminar_dxf' dxf.id %}" class="btn btn-danger" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        No hay archivos DXF subidos. Puede subir uno desde el boton "Subir DXF".
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

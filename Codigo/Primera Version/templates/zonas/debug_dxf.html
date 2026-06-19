@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Debug DXF{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-cogs"></i> Procesar DXF</h2>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fas fa-file-code"></i> Archivo: {{ dxf.nombre }}
+            </div>
+        </div>
+        <div class="card-body">
+            <pre style="background: #1e1e1e; color: #00ff00; padding: 15px; border-radius: 5px; white-space: pre-wrap; max-height: 400px; overflow-y: auto;">{% for line in debug_info %}{{ line }}
+{% endfor %}</pre>
+            
+            {% if resultado %}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> {{ resultado }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+            <span><strong>Filtrar zonas:</strong></span>
+            <select name="operador" style="padding: 8px;">
+                {% for op, label in operadores %}
+                <option value="{{ op }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <select name="valor" style="padding: 8px;">
+                {% for tipo in tipos_zonas %}
+                <option value="{{ tipo }}">{{ tipo }}</option>
+                {% endfor %}
+            </select>
+            <select name="accion" style="padding: 8px;">
+                <option value="activar">Activar zona</option>
+                <option value="desactivar">Desactivar zona</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-success btn-lg">
+            <i class="fas fa-play"></i> PROCESAR DXF
+        </button>
+        <a href="{% url 'zonas:lista_dxf' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </form>
+    
+    <div style="margin-top: 30px;">
+        <h4><i class="fas fa-map-marker-alt"></i> Zonas creadas:</h4>
+        <p><strong>Total: {{ dxf.zona_set.count }}</strong></p>
+        
+        {% if zonas_lista %}
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+            {% for zona in zonas_lista %}
+            <div class="card" style="padding: 10px;">
+                <strong>{{ zona.nombre }}</strong>
+                <span class="badge badge-{% if zona.activo %}success{% else %}secondary{% endif %}">
+                    {% if zona.activo %}ACTIVO{% else %}INACTIVO{% endif %}
+                </span>
+                <span class="badge badge-info">
+                    {{ zona.tipo }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

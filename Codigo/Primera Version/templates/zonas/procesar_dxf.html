@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Procesar DXF{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-cogs"></i> Procesar Archivo DXF</h2>
+    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fas fa-file-code"></i> {{ dxf.nombre }}
+            </div>
+        </div>
+        <div class="card-meta">
+            <p><i class="fas fa-ruler"></i> Escala: {{ dxf.escala|default:"-" }}</p>
+            <p><i class="fas fa-ruler-horizontal"></i> {{ dxf.get_unidad_medida_display }}</p>
+            <p><i class="fas fa-info-circle"></i> Estado: {{ dxf.get_estado_display }}</p>
+        </div>
+    </div>
+    
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Advertencia:</strong> Al procesar el DXF se generaran las zonas en la base de datos. 
+        Si ya existen zonas, se actualizardn con los datos del DXF.
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-cogs"></i> Procesar DXF
+            </button>
+            <a href="{% url 'zonas:lista_dxf' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

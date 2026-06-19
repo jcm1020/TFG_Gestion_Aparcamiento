@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar DXF{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-trash"></i> Eliminar Archivo DXF</h2>
+    
+    {% if zonas_asociadas > 0 %}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Advertencia:</strong> Este DXF tiene {{ zonas_asociadas }} zona(s) asociada(s). 
+        Al eliminarlo también se perderán las zonas asociadas.
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Nota:</strong> Esta acción eliminará permanentemente el archivo DXF "{{ dxf.nombre }}".
+    </div>
+    {% endif %}
+    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fas fa-file-code"></i> {{ dxf.nombre }}
+            </div>
+            <span class="status-{% if dxf.activo %}online{% else %}offline{% endif %}">
+                {% if dxf.activo %}Activo{% else %}Inactivo{% endif %}
+            </span>
+        </div>
+        <div class="card-meta">
+            <p><i class="fas fa-ruler"></i> Escala: {{ dxf.escala|default:"-" }}</p>
+            <p><i class="fas fa-info-circle"></i> Estado: {{ dxf.get_estado_display }}</p>
+            <p><i class="fas fa-map"></i> Zonas asociadas: {{ zonas_asociadas }}</p>
+            <p><i class="fas fa-calendar"></i> {{ dxf.fecha_creacion|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+            <a href="{% url 'zonas:lista_dxf' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

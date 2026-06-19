@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Zona{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-draw-polygon"></i> Registrar Zona</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-tag"></i> Identificacion
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_nombre" class="required">Nombre</label>
+                {{ form.nombre }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_tipo" class="required">Tipo</label>
+                {{ form.tipo }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_tag">Tag (etiqueta manual)</label>
+                {{ form.tag }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-ruler-combined"></i> Dimensiones y Posicion
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_coordenadas_posicion">Coordenadas de Posicion (X, Y)</label>
+                {{ form.coordenadas_posicion }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_ancho">Ancho (metros)</label>
+                {{ form.ancho }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_largo">Largo (metros)</label>
+                {{ form.largo }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_rotacion">Rotacion (grados)</label>
+                {{ form.rotacion }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_centroide">Centroide</label>
+                {{ form.centroide }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-cog"></i> Configuracion
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_camara_asignada">Camara Asignada</label>
+                {{ form.camara_asignada }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_activo">
+                    {{ form.activo }} Zona Activa
+                </label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Guardar Zona
+            </button>
+            <a href="{% url 'zonas:lista' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Aparcamiento{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+	{% if request.session.usuario_id %}
+    <!--if user.is_authenticated -->
+	
+		
+    <nav class="navbar">
+        <a href="{% url 'dashboard' %}" class="navbar-brand">
+            <i class="fas fa-parking"></i>
+            <span>Sistema de Gestion de Aparcamiento Inteligente</span>
+        </a>
+        <div class="navbar-menu">
+            <a href="{% url 'usuarios:lista' %}" class="nav-item f1"><i class="fas fa-users"></i> Usuarios</a>
+            <a href="{% url 'camaras:lista' %}" class="nav-item f2"><i class="fas fa-video"></i> Cámaras</a>
+            <a href="{% url 'imagenes:lista' %}" class="nav-item f3"><i class="fas fa-images"></i> Imágenes</a>
+            <a href="{% url 'zonas:lista' %}" class="nav-item f4"><i class="fas fa-draw-polygon"></i> Zonas</a>
+            <a href="url 'reconocimiento:lista' " class="nav-item f5"><i class="fas fa-brain"></i> Reconocimiento</a>
+            <a href="url 'alertas:lista_reglas' " class="nav-item f6"><i class="fas fa-bell"></i> Alertas</a>
+            <a href=" url 'privacidad:dashboard' " class="nav-item f8"><i class="fas fa-shield-alt"></i> Privacidad</a>
+        </div>
+        <div class="navbar-user">
+            <!--<span>{{ user.username }}</span>-->
+			<span>{{request.session.usuario_login}}</span>
+            <a href="{% url 'logout' %}" class="btn btn-sm">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesion
+            </a>
+        </div>
+    </nav>
+    
+    <div class="layout">
+        <aside class="sidebar">
+            {% include 'partials/sidebar.html' %}
+        </aside>
+        <main class="main-content">
+			{% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-{{ message.tags }}">
+					{{ message }}
+				</div>
+				{% endfor %}
+			{% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+    {% block login_content %}{% endblock %}
+    {% endif %}
+    
+    {% block extra_js %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

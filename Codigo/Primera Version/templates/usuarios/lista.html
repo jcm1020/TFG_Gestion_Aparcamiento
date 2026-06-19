@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado de Usuarios{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header f1">
+        <div>
+            <h2 style="margin: 0;"><i class="fas fa-users-cog"></i> F1 - Gestion de Usuarios del Nucleo</h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Administra los usuarios y permisos del sistema</p>
+            <div class="stats-cards inline" style="margin-top: 15px;">
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--primary);">{{ total|default:"0" }}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--success);">{{ activos|default:"0" }}</div>
+                    <div class="stat-label">Activos</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--danger);">{{ inactivos|default:"0" }}</div>
+                    <div class="stat-label">Inactivos</div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <form method="get" class="view-toggle">
+                <button type="submit" name="view" value="grid" class="{% if vista == 'grid' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i> Tarjetas
+                </button>
+                <button type="submit" name="view" value="list" class="{% if vista == 'list' %}active{% endif %}">
+                    <i class="fas fa-list"></i> Lista
+                </button>
+            </form>
+            <a href="{% url 'usuarios:crear' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nuevo Usuario
+            </a>
+        </div>
+    </div>
+    
+    {% if usuarios %}
+    {% if vista == 'grid' %}
+    <div class="cards-grid lista-grid">
+    {% else %}
+    <div class="cards-grid lista-list">
+    <div class="lista-list-header">
+        <div class="col-title">Usuario</div>
+        <div class="col-meta">
+            <span>Estado</span>
+            <span>Login</span>
+            <span>Email</span>
+            <span>Nivel</span>
+            <span>Creado</span>
+        </div>
+        <div class="col-actions">Acciones</div>
+    </div>
+    {% endif %}
+        {% for usuario in usuarios %}
+        <div class="card">
+            <div class="card-header col-title">
+                <div class="card-title">
+                    <div class="card-icon card-icon-primary">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    {{ usuario.nombre }} {{ usuario.apellidos }}
+                </div>
+            </div>
+            <div class="card-meta col-meta">
+                <p>{% if usuario.activo %}<span class="status-online"><i class="fas fa-circle" style="font-size: 8px;"></i> Activo</span>{% else %}<span class="status-offline"><i class="fas fa-circle" style="font-size: 8px;"></i> Inactivo</span>{% endif %}</p>
+                <p><i class="fas fa-at"></i> {{ usuario.login }}</p>
+                <p><i class="fas fa-envelope"></i> {{ usuario.email }}</p>
+                <p><i class="fas fa-hashtag"></i> {{ usuario.get_nivel_acceso_display }}</p>
+                <p><i class="fas fa-calendar"></i> {{ usuario.fecha_creacion|date:"d/m/Y" }}</p>
+            </div>
+            <div class="card-footer col-actions">
+                <div class="actions">
+					{% if request.session.usuario_nivel == 2 %}
+                    <a href="{% url 'usuarios:editar' usuario.id %}" class="btn btn-primary" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form method="post" action="{% url 'usuarios:eliminar' usuario.id %}" style="display:inline;">
+                        {% csrf_token %}
+						{% if request.session.usuario_nivel == 2 %}
+                        <button type="submit" class="btn btn-danger" title="Eliminar" onclick="return confirm('¿Eliminar usuario {{ usuario.nombre }}?');">
+                            <i class="fas fa-trash"></i>
+                        </button>
+						{% endif %}						
+                    </form>
+					{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        No hay usuarios registrados.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

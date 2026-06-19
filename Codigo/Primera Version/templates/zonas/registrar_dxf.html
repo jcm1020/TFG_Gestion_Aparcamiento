@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Archivo DXF{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-file-dxf"></i> Subir Archivo DXF</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-file-code"></i> Archivo DXF
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_nombre" class="required">Nombre</label>
+                {{ form.nombre }}
+                <p style="margin: 5px 0 0; color: var(--gray); font-size: 12px;">Nombre identificativo para el archivo DXF</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_archivo" class="required">Archivo DXF</label>
+                {{ form.archivo }}
+                <p style="margin: 5px 0 0; color: var(--gray); font-size: 12px;">Seleccione un archivo con extension .dxf</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-ruler"></i> Configuracion
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_escala">Escala</label>
+                {{ form.escala }}
+                <p style="margin: 5px 0 0; color: var(--gray); font-size: 12px;">Escala del plano (ej: 1:100)</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_unidad_medida">Unidad de Medida</label>
+                {{ form.unidad_medida }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-upload"></i> Subir DXF
+            </button>
+            <a href="{% url 'zonas:lista_dxf' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

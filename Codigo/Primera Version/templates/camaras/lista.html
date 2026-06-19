@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado de Camaras{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header f2">
+        <div>
+            <h2 style="margin: 0;"><i class="fas fa-video"></i> F2 - Gestion de Camaras</h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Configura y administra los dispositivos de percepcion</p>
+            <div class="stats-cards inline" style="margin-top: 15px;">
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--success);">{{ online_count|default:"0" }}</div>
+                    <div class="stat-label">Online</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--danger);">{{ offline_count|default:"0" }}</div>
+                    <div class="stat-label">Offline</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--primary);">{{ total_count|default:"0" }}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <form method="get" class="view-toggle">
+                <button type="submit" name="view" value="grid" class="{% if vista == 'grid' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i> Tarjetas
+                </button>
+                <button type="submit" name="view" value="list" class="{% if vista == 'list' %}active{% endif %}">
+                    <i class="fas fa-list"></i> Lista
+                </button>
+            </form>
+            <a href="{% url 'camaras:crear' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Camara
+            </a>
+        </div>
+    </div>
+    
+    {% if camaras %}
+    {% if vista == 'grid' %}
+    <div class="cards-grid lista-grid">
+    {% else %}
+    <div class="cards-grid lista-list">
+    <div class="lista-list-header">
+        <div class="col-title">Nombre</div>
+        <div class="col-meta">
+            <span>Estado</span>
+            <span>Zona</span>
+            <span>IP:Puerto</span>
+            <span>Resolución</span>
+        </div>
+        <div class="col-actions">Acciones</div>
+    </div>
+    {% endif %}
+        {% for camara in camaras %}
+        <div class="card">
+            <div class="card-header col-title">
+                <div class="card-title">
+                    <div class="card-icon {% if camara.estado == 'online' %}card-icon-success{% else %}card-icon-primary{% endif %}">
+                        <i class="fas {% if camara.estado == 'online' %}fa-video{% else %}fa-video-slash{% endif %}"></i>
+                    </div>
+                    {{ camara.nombre }}
+                </div>
+            </div>
+            <div class="card-meta col-meta">
+                <p><span class="status-{% if camara.estado == 'online' %}online{% else %}offline{% endif %}"><i class="fas fa-circle" style="font-size: 8px;"></i> {{ camara.get_estado_display }}</span></p>
+                <p><i class="fas fa-map-marker-alt"></i> {{ camara.zona_aparcamiento|default:"-" }}</p>
+                <p><i class="fas fa-network-wired"></i> {{ camara.ip }}:{{ camara.puerto }}</p>
+                <p><i class="fas fa-th"></i> {{ camara.resolucion|default:"-" }}</p>
+            </div>
+            <div class="card-footer col-actions">
+                <div class="actions">
+                    <a href="{% url 'camaras:editar' camara.id %}" class="btn btn-primary" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'camaras:capturar' camara.id %}" class="btn {% if camara.capturando %}btn-danger{% else %}btn-success{% endif %}" title="{% if camara.capturando %}Detener captura{% else %}Iniciar captura{% endif %}">
+                        <i class="fas {% if camara.capturando %}fa-stop{% else %}fa-camera{% endif %}"></i>
+                    </a>
+                    <form method="post" action="{% url 'camaras:eliminar' camara.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" title="Eliminar" onclick="return confirm('¿Eliminar cámara {{ camara.nombre }}?');">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        No hay camaras registradas.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

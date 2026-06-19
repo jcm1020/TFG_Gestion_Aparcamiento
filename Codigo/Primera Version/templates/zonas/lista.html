@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado de Zonas{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header f4">
+        <div>
+            <h2 style="margin: 0;"><i class="fas fa-draw-polygon"></i> F4 - Zonas del Parking</h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Gestiona zonas, plazas, entradas y areas del parking</p>
+            <div class="stats-cards inline" style="margin-top: 15px;">
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--primary);">{{ total_plazas|default:"0" }}</div>
+                    <div class="stat-label">Plazas</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--success);">{{ activas|default:"0" }}</div>
+                    <div class="stat-label">Activas</div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <form method="get" class="view-toggle">
+                <button type="submit" name="view" value="grid" class="{% if vista == 'grid' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i> Tarjetas
+                </button>
+                <button type="submit" name="view" value="list" class="{% if vista == 'list' %}active{% endif %}">
+                    <i class="fas fa-list"></i> Lista
+                </button>
+            </form>
+            <a href="{% url 'zonas:registro' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Zona
+            </a>
+            <a href="{% url 'zonas:lista_dxf' %}" class="btn btn-secondary">
+                <i class="fas fa-file-dxf"></i> Archivos DXF
+            </a>
+        </div>
+    </div>
+    
+    {% if zonas %}
+    {% if vista == 'grid' %}
+    <div class="cards-grid lista-grid">
+    {% else %}
+    <div class="cards-grid lista-list">
+    <div class="lista-list-header">
+        <div class="col-title">Nombre</div>
+        <div class="col-meta">
+            <span>Tipo</span>
+            <span>Estado</span>
+            <span>Tag</span>
+            <span>Centroide</span>
+        </div>
+        <div class="col-actions">Acciones</div>
+    </div>
+    {% endif %}
+        {% for zona in zonas %}
+        <div class="card" style="border-left: 4px solid {% if zona.activo %}var(--success){% else %}var(--danger){% endif %};">
+            <div class="card-header col-title">
+                <div class="card-title">
+                    <div class="card-icon card-icon-{% if zona.tipo == 'Plazas' %}success{% elif zona.tipo == 'Calzadas' %}warning{% else %}primary{% endif %}">
+                        <i class="fas {% if zona.tipo == 'Plazas' %}fa-parking{% elif zona.tipo == 'Calzadas' %}fa-road{% else %}fa-draw-polygon{% endif %}"></i>
+                    </div>
+                    {{ zona.nombre }}
+                </div>
+            </div>
+            <div class="card-meta col-meta">
+                <p>{{ zona.tipo }}</p>
+                <p><span class="badge badge-{% if zona.activo %}success{% else %}danger{% endif %}">{% if zona.activo %}ACTIVO{% else %}INACTIVO{% endif %}</span></p>
+                <p><i class="fas fa-tag"></i> {{ zona.tag|default:"-" }}</p>
+                <p><i class="fas fa-crosshairs"></i> {% if zona.centroide %}{{ zona.centroide }}{% else %}-{% endif %}</p>
+            </div>
+            <div class="card-footer col-actions">
+                <div class="actions">
+                    <a href="{% url 'zonas:editar' zona.id %}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="{% url 'zonas:eliminar_zona' zona.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar zona {{ zona.nombre }}?')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        No hay zonas registradas. Puede subir un archivo DXF o registrar una zona manualmente.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

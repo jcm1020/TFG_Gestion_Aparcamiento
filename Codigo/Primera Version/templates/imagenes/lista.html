@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado de Imagenes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header f3">
+        <div>
+            <h2 style="margin: 0;"><i class="fas fa-images"></i> F3 - Gestion de Imagenes</h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Gestiona las imagenes capturadas por las camaras</p>
+            <div class="stats-cards inline" style="margin-top: 15px;">
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--warning);">{{ pendientes|default:"0" }}</div>
+                    <div class="stat-label">Pendientes</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--success);">{{ procesadas|default:"0" }}</div>
+                    <div class="stat-label">Procesadas</div>
+                </div>
+                <div class="card stat-card" style="padding: 10px;">
+                    <div class="stat-value" style="color: var(--primary);">{{ total|default:"0" }}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; min-width: 180px;">
+            <form method="get" class="view-toggle">
+                <button type="submit" name="view" value="grid" class="{% if vista == 'grid' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i> Tarjetas
+                </button>
+                <button type="submit" name="view" value="list" class="{% if vista == 'list' %}active{% endif %}">
+                    <i class="fas fa-list"></i> Lista
+                </button>
+            </form>
+            <a href="{% url 'imagenes:subir' %}" class="btn btn-primary btn-full">
+                <i class="fas fa-upload"></i> Nueva Imagen
+            </a>
+            <form method="post" action="{% url 'imagenes:eliminar_todas' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-full" onclick="return confirm('¿Eliminar TODAS las imágenes y archivos del disco?');">
+                    <i class="fas fa-trash-alt"></i> Eliminar Todas
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    {% if imagenes %}
+    {% if vista == 'grid' %}
+    <div class="cards-grid lista-grid">
+    {% else %}
+    <div class="cards-grid lista-list">
+    <div class="lista-list-header">
+        <div class="col-title">Nombre</div>
+        <div class="col-meta">
+            <span>Estado</span>
+            <span>Referencia</span>
+            <span>Cámara</span>
+            <span>Privacidad</span>
+            <span>Fecha</span>
+        </div>
+        <div class="col-actions">Acciones</div>
+    </div>
+    {% endif %}
+        {% for imagen in imagenes %}
+        <div class="card">
+            <div class="card-header col-title">
+                <div class="card-title">
+                    <div class="card-icon card-icon-primary">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    {{ imagen.nombre|default:"Imagen sin nombre" }}
+                </div>
+            </div>
+            <div class="card-meta col-meta">
+                <p><span class="status-{% if imagen.estado == 'procesada' %}online{% else %}offline{% endif %}" style="white-space: nowrap;">{{ imagen.get_estado_display }}</span></p>
+                {% if imagen.es_referencia %}
+                <p style="color: var(--primary);"><i class="fas fa-star"></i> <strong>Ref.</strong></p>
+                {% else %}
+                <p style="color: var(--gray);">-</p>
+                {% endif %}
+                <p><i class="fas fa-camera"></i> {{ imagen.camara.nombre|default:"-" }}</p>
+                <p><i class="fas fa-shield-alt"></i> {{ imagen.get_nivel_privacidad_display }}</p>
+                <p><i class="fas fa-clock"></i> {{ imagen.timestamp|date:"d/m/Y H:i" }}</p>
+            </div>
+            <div class="card-footer col-actions">
+                <div class="actions">
+                    {% if imagen.es_referencia %}
+                    <span class="badge badge-primary" style="margin-right: 5px;">
+                        <i class="fas fa-star"></i> Referencia
+                    </span>
+                    {% else %}
+                    <a href="{% url 'imagenes:marcar_referencia' imagen.id %}" class="btn btn-warning" title="Marcar como referencia">
+                        <i class="fas fa-star"></i>
+                    </a>
+                    {% endif %}
+                    <form method="post" action="{% url 'imagenes:eliminar' imagen.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar esta imagen?');">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        No hay imagenes capturadas.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
