@@ -1,0 +1,211 @@
+\documentclass[12pt,a4paper]{article}
+
+% Castellano
+\usepackage[spanish,es-tabla]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{placeins}
+
+% Añadidos por mi
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{eurosym}
+
+\usepackage{float}
+\RequirePackage{booktabs}
+\RequirePackage[table]{xcolor}
+\RequirePackage{xtab}
+\RequirePackage{multirow}
+
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setstretch{1.15}
+
+% Contador de capítulo para numeración prefijada
+\newcounter{chapter}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+
+% Comando para simular "Capítulo"
+\newcommand{\capitulo}[2]{%
+    \setcounter{chapter}{#1}%
+    \setcounter{section}{0}%
+    \section*{Capítulo #1. #2}%
+}
+
+\begin{document}
+
+\capitulo{6}{Presupuesto}
+
+\section{Resumen General de Objetivo}
+
+SIGESAI Sistema de Gestión de Aparcamientos Inteligente, sistema de detección de objetos en tiempo real mediante cámaras IP Hikvision, usando la biblioteca YOLO de Ultralytic sobre GPU NVIDIA RTX 4090, con interfaz Django, dashboard de monitorización en un servidor Linux.
+
+\textbf{Tarifa de desarrollo}: 50\,\euro{}/h (desarrollador Django/Python mid-level, mercado España 2026).
+
+\section{Desarrollo (inversión única)}
+
+\begin{table}[H]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{p{10cm}cr}
+		\toprule
+		\textbf{Partida} & \textbf{Horas} & \textbf{Coste} \\
+		\midrule
+		Desarrollo completo (7 apps, con autenticación, gestión de usuarios, cámaras, Hikvision SDK, imágenes, importación de DXF, inicio de sistema con subprocesos watchdog, dashboard de monitorización, con manual de usuario) & 350 h & 17.500\,\euro{} \\
+		API REST (endpoints read-only, RestFull Framework en Django, TokenAuthentication) & 50 h & 2.500\,\euro{} \\
+		Implantación (Docker, PostgreSQL, Nginx, pruebas, formación, documentación técnica) & 40 h & 2.000\,\euro{} \\
+		\midrule
+		\textbf{Total desarrollo} & \textbf{440 h} & \textbf{22.000\,\euro{}} \\
+		\bottomrule
+	\end{tabular}%
+	}
+	\caption{Desarrollo: partidas, horas y costes}
+	\label{tab:desarrollo}
+\end{table}
+
+\section{Hardware (inversión única)}
+
+\begin{table}[H]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{lc}
+		\toprule
+		\textbf{Concepto} & \textbf{Precio} \\
+		\midrule
+		Servidor torre (Ryzen 7/Xeon, 32 GB RAM, 1 TB NVMe + RTX 4090 24 GB) & 3.000\,\euro{} \\
+		SAI/UPS APC Back-UPS Pro 1000VA & 180\,\euro{} \\
+		Cámara Hikvision IP PoE 4MP $\times$ 2 & 240\,\euro{} \\
+		Switch PoE 5 puertos TP-Link TL-SG1005P & 60\,\euro{} \\
+		Cableado Cat6 + canaletas + conectores RJ45 & 50\,\euro{} \\
+		\midrule
+		\textbf{Total hardware} & \textbf{3.530\,\euro{}} \\
+		\bottomrule
+	\end{tabular}%
+	}
+	\caption{Hardware del sistema}
+	\label{tab:hardware}
+\end{table}
+
+\section{Implantación (inversión única)}
+
+\begin{table}[H]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{lcr}
+		\toprule
+		\textbf{Tarea} & \textbf{Horas} & \textbf{Coste} \\
+		\midrule
+		Docker Compose + Dockerfile (PostgreSQL) & 12 h & 600\,\euro{} \\
+		Configuración Django + SSL & 6 h & 300\,\euro{} \\
+		Scripts de backup automático (BD + imágenes) & 4 h & 200\,\euro{} \\
+		Pruebas de integración & 8 h & 400\,\euro{} \\
+		Formación del técnico (2 sesiones) & 6 h & 300\,\euro{} \\
+		Puesta en producción + monitorización inicial & 4 h & 200\,\euro{} \\
+		\midrule
+		\textbf{Total implantación} & \textbf{40 h} & \textbf{2.000\,\euro{}} \\
+		\bottomrule
+	\end{tabular}%
+	}
+	\caption{Implantación: tareas, horas y costes}
+	\label{tab:implantacion}
+\end{table}
+
+\section{Mantenimiento anual (coste recurrente)}
+
+\begin{table}[H]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{lcr}
+		\toprule
+		\textbf{Concepto} & \textbf{Mensual} & \textbf{Anual} \\
+		\midrule
+		Técnico de supervisión del sistema (18.000\,\euro{}/año) & 1.500\,\euro{} $\times$ 50\,\% = 750\,\euro{} & 9.000\,\euro{} \\
+		Administrador de sistemas (25.000\,\euro{}/año) & 2.083\,\euro{} $\times$ 25\,\% = 520\,\euro{} & 6.240\,\euro{} \\
+		Hosting (dominio .com/es, backup cloud 500 GB) & 30\,\euro{} & 360\,\euro{} \\
+		\midrule
+		\textbf{Total mantenimiento anual} & \textbf{1.300\,\euro{}} & \textbf{15.600\,\euro{}} \\
+		\bottomrule
+	\end{tabular}%
+	}
+	\caption{Mantenimiento anual recurrente}
+	\label{tab:mantenimiento}
+\end{table}
+
+\noindent\textit{Nota: los costes de personal corresponden a jornada parcial dedicada al sistema (aproximadamente 50\,\% del tiempo del técnico y 25\,\% del administrador).}
+
+\section{Licencias}
+
+\begin{table}[H]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{lc}
+		\toprule
+		\textbf{Licencia} & \textbf{Coste anual} \\
+		\midrule
+		Stack libre (Django, PostgreSQL, Nginx, Python, Linux, Docker, Hikvision SDK, ezdxf) & 0\,\euro{} \\
+		YOLO Ultralytics Enterprise (uso comercial)* & 3.000\,\euro{} \\
+		\bottomrule
+	\end{tabular}%
+	}
+	\caption{Coste de licencias del sistema}
+	\label{tab:licencias}
+\end{table}
+
+\noindent * Coste estimado orientativo. Sujeto a cotización directa con Ultralytics.
+
+\section{Despliegue}
+
+Todo en un mismo servidor: aplicación Django, base de datos PostgreSQL, YOLO GPU y captura de cámaras Hikvision.
+
+\begin{itemize}
+	\item \textbf{Ventajas}: coste menor, gestión simplificada, mantenimiento centralizado.
+	\item \textbf{Inversión inicial}: \textbf{27.530\,\euro{}} (22.000 + 3.530 + 2.000).
+	\item \textbf{Mantenimiento anual}: 15.600\,\euro{}.
+\end{itemize}
+
+\section{Totales}
+
+\begin{table}[H]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\resizebox{0.7\textwidth}{!}{%
+	\begin{tabular}{lc}
+		\toprule
+		\textbf{Concepto} & \textbf{Importe} \\
+		\midrule
+		Desarrollo (único) & 22.000\,\euro{} \\
+		Hardware (único) & 3.530\,\euro{} \\
+		Implantación (único) & 2.000\,\euro{} \\
+		\midrule
+		\textbf{Inversión inicial} & \textbf{27.530\,\euro{}} \\
+		\midrule
+		Mantenimiento anual & 15.600\,\euro{} \\
+		Licencia YOLO Enterprise* & 3.000\,\euro{} \\
+		\midrule
+		\textbf{Coste total primer año} & \textbf{46.130\,\euro{}} \\
+		\textbf{Coste total segundo año} & \textbf{18.600\,\euro{}} \\
+		\bottomrule
+	\end{tabular}%
+	}
+	\caption{Resumen de costes totales}
+	\label{tab:totales}
+\end{table}
+
+\noindent * Coste estimado orientativo. Consultar cotización actualizada con Ultralytics.
+
+\vfill
+
+\noindent\textit{Presupuesto estimado con tarifas de mercado España 2026. IVA no incluido.}
+
+\end{document}

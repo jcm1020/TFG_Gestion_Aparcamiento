@@ -1,0 +1,372 @@
+\documentclass[12pt,a4paper]{article}
+
+% Castellano
+\usepackage[spanish,es-tabla]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % Scalable font
+\usepackage{microtype}
+\usepackage{placeins}
+
+% Añadidos por mi
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{array}
+
+\RequirePackage{booktabs}
+\RequirePackage[table]{xcolor}
+\RequirePackage{xtab}
+\RequirePackage{multirow}
+
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setstretch{1.15}
+
+% Contador de capítulo para numeración prefijada
+\newcounter{chapter}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+
+% Comando para simular "Capítulo"
+\newcommand{\capitulo}[2]{%
+	\setcounter{chapter}{#1}%
+	\setcounter{section}{0}%
+	\section*{Capítulo #1. #2}%
+}
+
+% Comando para imágenes
+\newcommand{\imagen}[3]{%
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=#3\textwidth]{#1}
+		\caption{#2}\label{fig:#1}
+	\end{figure}
+	\FloatBarrier
+}
+
+\graphicspath{{manual_imagenes/}}
+
+\begin{document}
+
+\capitulo{5}{Manual de Usuario}
+
+Bienvenido al manual del Sistema de Gestión de Aparcamientos, una plataforma web desarrollada en Django que integra inteligencia artificial (YOLO) para la detección y monitorización de vehículos en aparcamientos. El sistema permite gestionar cámaras IP, procesar imágenes con detección de objetos, mapear zonas de aparcamiento desde planos DXF, y generar alertas basadas en reglas personalizadas.
+
+\section{Acceso al Sistema}
+
+\subsection{Página Principal}
+
+La página principal (\texttt{/}) es una página de presentación pública que muestra información general del sistema y enlaces de acceso.
+
+\imagen{00_index}{Página Principal}{0.90}
+
+\subsection{Inicio de Sesión}
+
+Para acceder a las funciones del sistema, debe iniciar sesión en \texttt{/login/}. Introduzca su nombre de usuario y contraseña y pulse \lq{}Iniciar Sesión\rq{}.
+
+\imagen{01_login}{Inicio de Sesión}{0.7}
+
+\subsection{Registro de Usuarios}
+
+Si no tiene cuenta, puede registrarse en \texttt{/registro/}. Complete el formulario con sus datos personales (nombre, apellidos, email, teléfono, dirección) y elija un nombre de usuario y contraseña.
+
+\imagen{02_registro}{Registro de Usuarios}{0.7}
+
+\subsection{Perfil de Usuario}
+
+Una vez autenticado, puede acceder a su perfil en \texttt{/perfil/} para consultar y modificar sus datos personales, así como cambiar su contraseña.
+
+\imagen{03_perfil}{Perfil de Usuario}{1.0}
+
+\section{Dashboard Principal}
+
+El dashboard (\texttt{/dashboard/}) es la pantalla principal del sistema tras iniciar sesión. Ofrece una visión general del estado del sistema con:
+
+\begin{itemize}
+	\item \textbf{Ocupación}: porcentaje de ocupación actual del aparcamiento.
+	\item \textbf{Cámaras}: número de cámaras online y offline.
+	\item \textbf{Alertas}: número de alertas pendientes y críticas.
+	\item \textbf{Accesos rápidos}: enlaces directos a cada módulo del sistema.
+	\item \textbf{Estado del sistema}: indicador del servicio de detección (activo/inactivo).
+	\item \textbf{Actividad reciente}: resumen de las últimas detecciones y alertas.
+\end{itemize}
+
+\imagen{04_dashboard}{Dashboard Principal}{1.0}
+
+\section{Gestión de Usuarios (F1)}
+
+El módulo de usuarios permite administrar las cuentas de los operadores del sistema. Hay dos niveles de acceso:
+
+\begin{itemize}
+	\item \textbf{Nivel 1 --- Básico}: puede ver listados y gestionar imágenes, zonas, procesamiento y alertas.
+	\item \textbf{Nivel 2 --- Administrador}: puede además crear, editar y eliminar usuarios.
+\end{itemize}
+
+\subsection{Listado de Usuarios}
+
+El listado (\texttt{/usuarios/}) muestra todos los usuarios registrados en el sistema. Puede alternar entre vista de cuadrícula y vista de lista.
+
+\imagen{05_usuarios_lista}{Listado de Usuarios}{1.0}
+
+\subsection{Crear Usuario}
+
+Desde \texttt{/usuarios/crear/} (solo administradores) puede registrar un nuevo usuario en el sistema. Complete los datos personales, asigne un nivel de acceso y establezca una contraseña.
+
+\imagen{06_usuarios_crear}{Crear Usuario}{1.0}
+
+\section{Gestión de Cámaras (F2)}
+
+El módulo de cámaras gestiona los dispositivos IP conectados al sistema. Soporta el protocolo ISAPI de Hikvision para la captura de imágenes.
+
+\subsection{Listado de Cámaras}
+
+En \texttt{/camaras/} puede ver todas las cámaras registradas, su estado (online/offline), ubicación física, zona de aparcamiento y si están capturando activamente.
+
+\imagen{07_camaras_lista}{Listado de Cámaras}{1.0}
+
+\subsection{Crear Cámara}
+
+Desde \texttt{/camaras/crear/} puede añadir una nueva cámara IP. Necesitará:
+
+\begin{itemize}
+	\item \textbf{Nombre}: identificador descriptivo.
+	\item \textbf{Dirección IP}: IP del dispositivo en la red.
+	\item \textbf{Puerto}: puerto de conexión (por defecto 80).
+	\item \textbf{Usuario y contraseña}: credenciales de acceso a la cámara.
+	\item \textbf{Ubicación física}: dónde está instalada.
+	\item \textbf{Zona de aparcamiento}: zona que cubre.
+	\item \textbf{Resolución}: formato de imagen (ej. 1920x1080).
+	\item \textbf{URL del stream ISAPI}: plantilla de URL para captura.
+\end{itemize}
+
+\imagen{08_camaras_crear}{Crear Cámara}{1.0}
+
+Una vez creada, puede activar la \textbf{captura continua} pulsando el botón correspondiente en el listado. El sistema lanzará un hilo que captura imágenes periódicamente de la cámara. Estas imágenes se guardan en el directorio \texttt{/media/imagenes/}.
+
+\section{Gestión de Imágenes (F3)}
+
+El módulo de imágenes gestiona todas las capturas realizadas por las cámaras o subidas manualmente.
+
+\subsection{Listado de Imágenes}
+
+En \texttt{/media/imagenes/} puede ver todas las imágenes almacenadas. El listado permite filtrar por origen (manual/automática) y alternar entre vista de cuadrícula con miniaturas y vista de lista.
+
+\imagen{09_imagenes_lista}{Listado de Imágenes}{1.0}
+
+\subsection{Subir Imagen}
+
+Desde \texttt{/imagenes/subir/} puede cargar una imagen manualmente. Seleccione el archivo, asigne un nivel de privacidad (público/privado/confidencial) y añada comentarios si lo desea. También puede marcarla como imagen de referencia para la inicialización del sistema. Subir imagen creará una copia del archivo de imagen seleccionado y lo almacenará en el directorio \texttt{/media/imagenes/}.
+
+\imagen{10_imagenes_subir}{Subir Imagen}{1.0}
+
+\textbf{Funcionalidades adicionales}:
+
+\begin{itemize}
+	\item \textbf{Marcar como referencia}: las imágenes de referencia se usan durante la inicialización del sistema para establecer el mapeo relacional entre \lq{}zonas del plano DXF\rq{} y \lq{}objetos reconocidos\rq{}, esta información servirá para la inferencia del sistema de detección continuo. Pueden marcarse como referencia tanto las imágenes capturadas por cámaras como las imágenes subidas.
+	\item \textbf{Eliminar}: puede eliminar imágenes individuales o todas las imágenes a la vez (opcionalmente conservando las de referencia).
+\end{itemize}
+
+\section{Zonas de Aparcamiento (F4)}
+
+El módulo de zonas define la distribución física del aparcamiento. Las zonas pueden ser: plazas de aparcamiento, calzadas, aceras, entradas, salidas, áreas restringidas y otras.
+
+\subsection{Listado de Zonas}
+
+En \texttt{/zonas/} puede ver todas las zonas definidas. Cada zona muestra su nombre, tipo, posición, dimensiones, cámara asignada y estado (activo/inactivo).
+
+\imagen{11_zonas_lista}{Listado de Zonas}{0.75}
+
+\subsection{Registrar Zona Manualmente}
+
+Desde \texttt{/zonas/registrar/} puede crear una zona introduciendo sus datos manualmente: nombre, tipo, coordenadas, dimensiones, cámara asignada y vértices del polígono.
+
+\imagen{12_zonas_registrar}{Registrar Zona}{1.0}
+
+\subsection{Archivos DXF}
+
+El sistema permite importar la distribución del aparcamiento desde archivos DXF (formato CAD). En \texttt{/zonas/dxf/} puede gestionar estos archivos.
+
+\imagen{13_zonas_dxf_lista}{Listado de Archivos DXF}{1.0}
+
+\subsection{Subir Archivo DXF}
+
+Desde \texttt{/zonas/dxf/registrar/} puede subir un nuevo plano DXF. Seleccione el archivo, indique la escala y la unidad de medida.
+
+\imagen{14_zonas_dxf_subir}{Subir Archivo DXF}{1.0}
+
+\textbf{Flujo de trabajo con DXF}:
+
+\begin{enumerate}
+	\item \textbf{Registrar}: suba el archivo DXF.
+	\item \textbf{Activar}: active el DXF procesado (solo uno puede estar activo a la vez).
+	\item \textbf{Procesar}: el sistema analiza el DXF y extrae los polígonos para crear las zonas automáticamente.
+	\item \textbf{Debug}: si algo falla, puede usar la vista de depuración que se ve a continuación de llamar a \lq{}Procesar\rq{}, para ver los resultados uno a uno.
+\end{enumerate}
+
+\section{Procesamiento YOLO (F5)}
+
+El corazón del sistema. Utiliza el modelo YOLO11x (Ultralytics) para detectar objetos en las imágenes. Los objetos detectados se mapean a las zonas definidas para determinar su ubicación. Antes de iniciar la detección continuada del sistema, es imprescindible inicializar sistema para crear la relación.
+
+\subsection{Inicialización del Sistema}
+
+El asistente de inicialización (\texttt{/zonas/inicializar/}) guía al usuario paso a paso para poner el sistema en funcionamiento:
+
+\begin{enumerate}
+	\item \textbf{Subir DXF}: cargar el plano CAD del aparcamiento.
+	\item \textbf{Subir imagen de referencia}: cargar una imagen para establecer las zonas con las que trabajamos.
+	\item \textbf{Inicializar mapeo YOLO}: ejecutar YOLO sobre la imagen de referencia y mapear los objetos a las zonas.
+	\item \textbf{Iniciar detección continua}: lanzar el subproceso de watchdog de detección.
+\end{enumerate}
+
+El asistente verifica los requisitos de cada paso y muestra el progreso.
+
+\imagen{15_zonas_inicializar}{Inicialización del Sistema}{1.0}
+
+\subsection{Iniciar Detección}
+
+Desde \texttt{/procesamiento/iniciar/} puede poner en marcha el sistema de detección continua. Este es el componente central del sistema: un subproceso interno \lq{}watchdog\rq{} que captura imágenes de las cámaras IP en tiempo real y ejecuta el modelo YOLO11x sobre cada fotograma para detectar vehículos y otros objetos.
+
+\textbf{Prerrequisitos}:
+
+\begin{enumerate}
+	\item \textbf{DXF subido y procesado}: el plano del aparcamiento debe estar cargado y activo.
+	\item \textbf{Imagen de referencia}: debe existir al menos una imagen marcada como referencia.
+	\item \textbf{Sistema inicializado}: ejecutar el asistente de inicialización para crear el mapeado entre objetos YOLO y zonas del plano.
+\end{enumerate}
+
+\textbf{Cómo funciona}:
+
+\begin{itemize}
+	\item Al pulsar \lq{}INICIAR DETECCIÓN\rq{}, el sistema lanza un subproceso independiente (\texttt{sistema\_deteccion}) que orquesta la captura y el procesamiento continuo de imágenes.
+	\item La consola en pantalla muestra el log en vivo del subproceso: imágenes capturadas, objetos detectados, errores y tiempos de procesamiento. Es necesario refrescar la página para ver los cambios.
+	\item Para detenerlo, pulse \lq{}DETENER\rq{} --- el subproceso \lq{}watchdog\rq{} escribe un archivo centinela para una parada controlada en Windows.
+	\item Los objetos detectados se mapean a las zonas mediante el método de centroide más cercano (regresión lineal para detectar filas de objetos). La relación se almacena en la tabla \texttt{Mapeo} de la base de datos.
+\end{itemize}
+
+\textbf{Monitoreo}: desde esta misma página puede acceder a \lq{}Ver Estado\rq{} para consultar estadísticas de rendimiento, tiempo de ejecución y PID del proceso.
+
+\imagen{iniciar_deteccion}{Iniciar Detección}{1.0}
+
+\subsection{Estado del Sistema de Detección}
+
+En \texttt{/procesamiento/estado/} puede ver el estado actual del sistema de detección continua: si está en ejecución, directorios utilizados y estadísticas.
+
+\imagen{18_procesamiento_estado}{Estado del Sistema de Detección}{1.0}
+
+\subsection{Listado de Objetos Reconocidos}
+
+Iniciada la detección continuada, en \texttt{/procesamiento/} puede ver todos los objetos que el sistema va detectando (es necesario refrescar página para ver los nuevos resultados). Cada objeto muestra: tipo (coche, persona, autobús, camión, moto, bicicleta, etc.), coordenadas del bounding box, color detectado, confianza, zona mapeada y fecha.
+
+\imagen{16_procesamiento_lista}{Listado de Objetos Reconocidos}{1.0}
+
+\subsection{Procesamiento Manual de Imagen}
+
+Desde \texttt{/procesamiento/procesamiento/} puede ejecutar la detección YOLO sobre una imagen específica. Seleccione la imagen, ajuste los parámetros de detección y pulse \lq{}Procesar\rq{}.
+
+\textbf{Parámetros ajustables}:
+
+\begin{itemize}
+	\item \textbf{Confianza}: umbral de confianza mínimo (0-100\,\%).
+	\item \textbf{Solapamiento}: umbral de solapamiento máximo (0-100\,\%).
+	\item \textbf{Tamaño de imagen}: tamaño de entrada para YOLO.
+	\item \textbf{Aumento de datos}: activar/desactivar aumento.
+	\item \textbf{Supresión No Máxima (NMS)}: activar/desactivar.
+	\item \textbf{Clases}: seleccionar qué clases de objetos detectar.
+\end{itemize}
+
+\imagen{17_procesamiento_procesar}{Procesamiento YOLO}{1.0}
+
+El resultado muestra la imagen anotada con los objetos detectados (bounding boxes con etiqueta y porcentaje de confianza) y una tabla detallada con el tipo, confianza y coordenadas de bounding box de cada objeto detectado.
+
+\imagen{17b_procesamiento_resultado}{Resultado del Procesamiento YOLO}{1.0}
+
+\section{Alertas y Reglas (F6)}
+
+El motor de alertas permite definir reglas personalizadas que se evalúan contra los resultados de detección YOLO. Cuando una regla se cumple, se genera una alerta.
+
+\subsection{Listado de Alertas}
+
+En \texttt{/alertas/} puede ver todas las alertas generadas. Puede filtrar por tipo (información/aviso/crítico) y por estado (leída/no leída). Cada alerta muestra la regla que la disparó, el objeto detectado, la zona relacionada y la fecha.
+
+\imagen{19_alertas_lista}{Listado de Alertas}{1.0}
+
+\subsection{Reglas de Alerta}
+
+En \texttt{/alertas/reglas/} puede gestionar las reglas. Cada regla define una condición que, al cumplirse, genera una alerta.
+
+\imagen{20_alertas_reglas}{Reglas de Alerta}{1.0}
+
+\subsection{Crear Regla}
+
+Desde \texttt{/alertas/reglas/crear/} puede definir una nueva regla. El proceso consta de dos pasos:
+
+\textbf{Paso 1 --- Seleccionar campo}: elija sobre qué campo aplicar la regla:
+
+\begin{itemize}
+	\item \texttt{objeto.tipo} --- tipo de objeto detectado (coche, persona, etc.)
+	\item \texttt{objeto.confianza} --- porcentaje de confianza
+	\item \texttt{zona.nombre} --- nombre de la zona
+	\item \texttt{zona.tipo} --- tipo de zona (plaza, calzada, etc.)
+\end{itemize}
+
+\imagen{21_alertas_regla_crear}{Crear Regla --- Paso 1: seleccionar campo}{1.0}
+
+\textbf{Paso 2 --- Configurar regla}: seleccione el operador (\texttt{==}, \texttt{!=}, \texttt{>}, \texttt{<}, \texttt{>=}, \texttt{<=}, \texttt{contains}, \texttt{in}) y el valor de comparación. Elija el tipo de alerta (información/aviso/crítico).
+
+\imagen{21b_alertas_regla_configurar}{Crear Regla --- Paso 2: configurar regla}{1.0}
+
+\textbf{Ejemplos de reglas útiles, combinando dos reglas activas}:
+
+\begin{itemize}
+	\item Si \texttt{objeto.tipo == person} en zona tipo \texttt{restringida} $\rightarrow$ alerta crítica
+	\item Si \texttt{objeto.confianza > 90} y \texttt{zona.tipo == plaza} $\rightarrow$ alerta informativa
+	\item Si \texttt{zona.nombre contains \lq{}entrada\rq{}} y \texttt{objeto.tipo == camión} $\rightarrow$ alerta de aviso
+\end{itemize}
+
+\section{Administración de Django}
+
+El panel de administración de Django (\texttt{/admin/}) proporciona acceso directo a todas las tablas de la base de datos para tareas avanzadas de gestión. Implementación planificada en el futuro.
+
+\imagen{22_admin_django}{Administración Django}{1.0}
+
+Aquí puede realizar operaciones CRUD sobre cualquier modelo del sistema: usuarios, cámaras, imágenes, zonas, archivos DXF, objetos reconocidos, reglas y alertas.
+
+\section*{Apéndice: Arquitectura del Sistema}
+
+El sistema está organizado en 6 módulos funcionales:
+
+\begin{table}[!h]
+	\centering
+	\rowcolors{2}{gray!15}{}
+	\begin{tabular}{lll}
+		\toprule
+		\textbf{Módulo} & \textbf{Función} & \textbf{Tecnología} \\
+		\midrule
+		F1 --- Usuarios & Gestión de operadores & Django ORM, auth personalizada \\
+		F2 --- Cámaras & Gestión de cámaras IP & ISAPI/Hikvision, hilos Python \\
+		F3 --- Imágenes & Captura y almacenamiento & Django FileField \\
+		F4 --- Zonas & Definición de zonas & DXF parsing, geometría \\
+		F5 --- Procesamiento & Detección YOLO & Ultralytics YOLO11x \\
+		F6 --- Alertas & Reglas y notificaciones & Motor de reglas propio \\
+		\bottomrule
+	\end{tabular}
+	\caption{Módulos funcionales del sistema}
+	\label{tab:modulos}
+\end{table}
+
+\textbf{Componentes clave y definición de términos empleados}:
+
+\begin{itemize}
+	\item \textbf{YOLO11x}: modelo de IA para detección de objetos en tiempo real.
+	\item \textbf{Watchdog}: subproceso independiente que implementa la captura y detección continua.
+	\item \textbf{Mapeo-mapeado}: proceso de relacionar, asignando objetos detectados a zonas.
+	\item \textbf{DXF}: formato CAD para importar la distribución del aparcamiento.
+\end{itemize}
+
+\vfill
+
+\noindent\textit{Fecha de documentación: 2 de Julio de 2026.}
+
+\end{document}
