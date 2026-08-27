@@ -1,0 +1,26 @@
+<nav class="navbar">
+    <!-- Logo -->
+    <div>
+        <a href="{% url 'dashboard' %}">
+            <i class="fas fa-parking"></i> <span>SIGAI - Gestión de Aparcamientos</span>
+        </a>
+    </div>
+
+    <!-- Menu Principal -->
+    <div>
+        <a href="{% url 'usuarios:lista' %}">
+            <i class="fas fa-users"></i> Usuarios
+        </a>
+        <a href="{% url 'espacios:lista' %}">
+            <i class="fas fa-parking"></i> Espacios
+        </a>
+    </div>
+
+    <!-- Perfil y Logout -->
+    <div>
+        <span>{{ request.session.usuario_login }}</span> <!-- Nombre del usuario -->
+        <a href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesion
+        </a>
+    </div>
+</nav>

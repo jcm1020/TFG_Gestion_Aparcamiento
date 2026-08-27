@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block contenido_login %}
+	
+	<section>
+	
+		<h1>SIGAI - Sistema de Gestion de Aparcamientos Inteligentes</h1>
+		
+		<p class="hero-subtitle">
+                Plataforma integral para la monitorizacion y control de parking.<br>
+                Fase 1: Gestion de Usuarios (F1).
+        </p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'login' %}">
+                    <i>Iniciar Sesion</i>
+            </a>
+            <a href="{% url 'registro' %}">
+                    <i>Registrarse</i>
+            </a>
+        </div>
+	</section>
+	
+	<section>
+		<h2>Estadisticas del sistema</h2>
+		
+		<div>
+		
+			<div>
+				<p>Administradores</p>
+			</div>
+			<div>
+				<p>Camaras Activas</p>
+			</div>
+			<div>
+				<p>Imagenes Capturadas</p>
+			</div>
+			<div>
+				<p>Objetos Reconocidos</p>
+			</div>
+			
+			<div>
+				<a href="{% url 'login' %}">
+					<i> Iniciar Sesion </i>
+				</a>
+			</div>
+			
+		</div>
+	
+	</section>
+
+
+{% endblock %}

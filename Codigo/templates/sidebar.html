@@ -1,0 +1,67 @@
+<!-- Asegurar la carga de iconos si los necesitamos -->
+{% load static %}
+
+<!--
+	Variable local para la ruta actual de la pagina.
+	Captura la ruta actual del navegador para usarla como 'path' dentro de este bloque.
+    Esto facilitara la comparación con patrones de URL sin acceder directamente a 'request'.
+	'path' se usa para conociendo la ruta establecer si debe estar abieto o no, activo o no el acordeon de HTML5 details.
+-->
+{% with request.path as path %}
+
+<!-- 
+    ========================
+    SECCION DE USUARIOS (F1)    
+    ========================
+-->
+<details data-section="F1" {% if '/usuarios/' in path or path == '/' %}open{% endif %}>
+    <summary>
+        <i class="fas fa-users"></i> Usuarios
+    </summary>
+    
+    <ul>
+        <!-- Enlace Activo: Lista -->
+        <li>
+            <a href="{% url 'usuarios:lista' %}" {% if '/usuarios/lista' in path %}class="active"{% endif %}>
+                <i></i> Listado de Usuarios
+            </a>
+        </li>
+
+        <!-- Enlace Secundario: Crear -->
+        <li>
+            <a href="{% url 'usuarios:crear' %}" {% if '/usuarios/crear' in path %}class="active"{% endif %}>
+                <i></i> Crear Usuario
+            </a>
+        </li>
+    </ul>
+</details>
+
+<!-- 
+    ========================
+    SECCION DE ESPACIOS (F2)
+    ========================
+-->
+<details data-section="F2" {% if '/espacios/' in path %}open{% endif %}>
+    <summary>
+        <i class="fas fa-parking"></i> Espacios
+    </summary>
+    
+    <ul>
+        <!-- Enlace Activo: Lista -->
+        <li>
+            <a href="{% url 'espacios:lista' %}" {% if '/espacios/' == path %}class="active"{% endif %}>
+                <i></i> Listado de Espacios
+            </a>
+        </li>
+
+        <!-- Enlace Secundario: Crear -->
+        <li>
+            <a href="{% url 'espacios:crear' %}" {% if '/espacios/crear' in path %}class="active"{% endif %}>
+                <i></i> Crear Espacio
+            </a>
+        </li>
+    </ul>
+</details>
+
+{% endwith %}
+

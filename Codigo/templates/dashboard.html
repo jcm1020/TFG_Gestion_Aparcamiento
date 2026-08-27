@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Dashboard{% endblock %}
+
+{% block contenido %}
+
+<div>
+	<!-- CABECERA DASHBOARD -->
+    <div>
+        <div>
+            <h2><i>Dashboard</i></h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Resumen del sistema SIGAI</p>
+        </div>
+        <div>
+            <a href="{% url 'index' %}">
+				<i>Inicio</i> 
+            </a>
+        </div>
+    </div>
+	
+	<!-- GRID PRINCIPAL DE INFORMACION -->
+	<div>
+		<div>            
+            <div>
+                <h3>{{ usuarios_count }}</h3>
+                <p>Usuarios Totales</p>
+            </div>
+        </div>
+        <div>            
+            <div>
+                <h3>{{ usuarios_activos }}</h3>
+                <p>Usuarios Activos</p>
+            </div>
+        </div>
+        <div>            
+            <div>
+                <h3>{{ usuarios_inactivos }}</h3>
+                <p>Usuarios Inactivos</p>
+            </div>
+        </div>
+        <div>            
+            <div>
+                <h3>{{ usuarios_admin }}</h3>
+                <p>Administradores</p>
+            </div>
+        </div>
+	</div>
+	
+	<!-- MODULOS DEL SISTEMA -->	
+	<div>	
+		<div>
+			<h3><i>Modulos del Sistema</i></h3>
+		</div>		
+		
+		<div>
+			<a href="{% url 'usuarios:lista' %}">
+                <h4>Listado de Usuarios</h4>                
+            </a>		
+			<a href="{% url 'usuarios:crear' %}">
+                <h4>Crear Usuario</h4>                
+            </a>
+		</div>		
+		
+	</div>
+
+{% endblock %} 

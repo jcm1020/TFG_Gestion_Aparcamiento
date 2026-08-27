@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE hmtl>
+<html lang="es">
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- --- BLOQUE PARA AJUSTAR EL TITULO DE CADA PAGINA --- -->
+		<title>{% block titulo %}SIGAI - Sistema de Gestion de Aparcamientos Inteligentes{% endblock %}</title>
+		
+		<!-- Carga de FontAwesome (librería de iconos) -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		
+		<!-- --- CARGA DEL FICHERO DE ESTILOS PRINCIPAL --- -->
+		<link rel="stylesheet" href={% static 'css/estilos.css' %}>
+		
+		<!-- 
+			OPCIONAL: Si se requieren estilos especificos en alguna página(paginas de login y registro).
+		-->
+		{% block extra_css %}{% endblock %}
+		
+	</head>
+	
+	<body>
+		
+		<!-- 
+			==============================
+			LOGICA DE SESION Y RUTA VISUAL
+			==============================
+			Decide qué "partes" del interface mostrar:
+			1. Si hay sesion -> Muestra Nav + sidebar + Mensajes + Contenido dinamico.
+			2. Si NO hay sesion -> Muestra la pagina Inicial o de Login y Registro.
+		-->
+		{% if request.session.usuario_id %}
+			<!-- --- BLOQUE SI EXISTE USUARIO LOGUEADO --- -->
+			
+			<!-- 1. INYECCIÓN DEL NAVBAR COMÚN -->
+			<!-- Lo colocamos aquí para que se vea en todos los dashboards sin repetir código -->
+			{% include 'navbar.html' %} 
+			
+			<!-- 
+				CONTENIDO PRINCIPAL DEL LAYOUT
+				Este div envuelve toda la aplicacion menos el navabar.
+			-->
+			<div class="layout">
+            
+            <!-- INSERCION DEL SIDEBAR FIJO -->
+            <!-- Lo colocamos aqui para que se vea en todas las paginas -->
+            {% include 'sidebar.html' %} 
+			
+			
+			<!-- 
+                BLOQUE CLAVE DE EXTENSION
+                Aquí es donde se inyecta el contenido de la pagina concreta, 
+				por ejemplo: `dashboard.html` o `usuarios:lista.html` inyectaran su contenido.
+                Si no se usa en un archivo, aquí aparecera vacio.
+            -->
+			{% block contenido %}{% endblock %}
+			
+			</div>
+			
+			
+		
+		{% else %}
+			<!-- --- BLOQUE SI NO EXISTE USUARIO LOGUEADO --- -->
+			
+			
+			
+			
+			<!-- 
+				BLOQUE DE LOGIN Y REGISTRO
+				Aqui se inyecta el contenido de 
+				1. index.html pagina publica o el de
+				2. login.html
+				Contendra la portada con alguna estadistica e informacion o
+				el formulario de login o registo.
+				NO debe presentar estructura de dashboard, ni navbar, ni sidebar.
+			-->			
+			{% block contenido_login %}{% endblock %} <!-- --- BLOQUE DE CONTENIDO PARA REGISTRARSE Y AUTENTICARSE SI NO EXISTE LOGIN CORRECTO --- -->
+				
+			
+		{% endif %}
+		
+		<footer>
+			<p><i>SIGAI - Sistema de Gestion de Aparcamientos Inteligentes</i></p>
+			<p style="opacity: 0.7; font-size: 12px; margin-top: 10px;">Prototipo TFG 2026</p>
+		</footer>
+		
+	</body>
+	
+</html>

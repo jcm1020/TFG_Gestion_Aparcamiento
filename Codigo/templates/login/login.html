@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Iniciar Sesión{% endblock %}
+
+{% block contenido_login %}
+<div class="login-container">
+    <div class="login-card">
+        <!-- Encabezado -->
+        <div class="login-header">
+            <i class="fas fa-parking"></i>
+            <h1>SIGAI - Aparcamientos Inteligentes</h1>
+            <p>Inicia sesión para continuar</p>
+        </div>
+
+        <!-- Mensajes de Error -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <!-- Alertas Flash (Mensajes del servidor) -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulario de Login -->
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Campo Usuario -->
+            <div class="form-group">
+                <label for="id_username">Usuario</label>
+                {{ form.username }}
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div class="form-group">
+                <label for="id_password">Contraseña</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Checkbox Recordarme -->
+            <div class="form-group">
+                <label>
+                    {{ form.remember }} Recordarme
+                </label>
+            </div>
+
+            <!-- Botón Enviar -->
+            <button type="submit" class="btn btn-primary">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <!-- Footer del Login -->
+        <div class="login-footer">
+            <p>No tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extra_css %}
+<style>
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header i {
+    font-size: 48px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.login-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.login-header p {
+    color: var(--gray);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--gray);
+}
+
+.login-footer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+</style>
+{% endblock %}
