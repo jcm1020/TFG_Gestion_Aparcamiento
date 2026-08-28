@@ -4,41 +4,53 @@
 
 {% block contenido %}
 
-<div>
+<div class="container">
 	<!-- CABECERA DASHBOARD -->
-    <div>
+    <div class="page-header">
         <div>
-            <h2><i>Dashboard</i></h2>
+            <h2><i class="fa fa-th-large"></i>Dashboard</h2>
             <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">Resumen del sistema SIGAI</p>
         </div>
         <div>
             <a href="{% url 'index' %}">
-				<i>Inicio</i> 
+				<i class="fa fa-home"></i>Inicio
             </a>
         </div>
     </div>
 	
 	<!-- GRID PRINCIPAL DE INFORMACION -->
-	<div>
-		<div>            
+	<div class="dashboard-grid">
+		<div class="dashboard-stat"> 
+			<div class="dashboard-stat-icon blue">
+                <i class="fas fa-users-cog"></i>
+            </div>
             <div>
                 <h3>{{ usuarios_count }}</h3>
                 <p>Usuarios Totales</p>
             </div>
         </div>
-        <div>            
+        <div class="dashboard-stat">
+			<div class="dashboard-stat-icon green">
+                <i class="fa fa-user-check"></i>
+            </div>
             <div>
                 <h3>{{ usuarios_activos }}</h3>
                 <p>Usuarios Activos</p>
             </div>
         </div>
-        <div>            
+        <div class="dashboard-stat"> 
+			<div class="dashboard-stat-icon orange">
+                <i class="fas fa-user-slash"></i>
+            </div>
             <div>
                 <h3>{{ usuarios_inactivos }}</h3>
                 <p>Usuarios Inactivos</p>
             </div>
         </div>
-        <div>            
+        <div class="dashboard-stat"> 
+			<div class="dashboard-stat-icon red">
+                <i class="fas fa-user-shield"></i>
+            </div>
             <div>
                 <h3>{{ usuarios_admin }}</h3>
                 <p>Administradores</p>
@@ -47,16 +59,18 @@
 	</div>
 	
 	<!-- MODULOS DEL SISTEMA -->	
-	<div>	
-		<div>
-			<h3><i>Modulos del Sistema</i></h3>
+	<div class="dashboard-row">	
+		<div class="card-header">
+			<h3><i>Modulos del Sistema. Accesos rapidos</i></h3>
 		</div>		
 		
-		<div>
+		<div class="card">
 			<a href="{% url 'usuarios:lista' %}">
+				<i class="fas fa-users" style="color: var(--primary);"></i>
                 <h4>Listado de Usuarios</h4>                
             </a>		
 			<a href="{% url 'usuarios:crear' %}">
+				<i class="fas fa-user-plus" style="color: #f59e0b;"></i>
                 <h4>Crear Usuario</h4>                
             </a>
 		</div>		

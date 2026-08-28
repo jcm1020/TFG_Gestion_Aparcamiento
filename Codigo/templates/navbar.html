@@ -2,17 +2,17 @@
     <!-- Logo -->
     <div>
         <a href="{% url 'dashboard' %}">
-            <i class="fas fa-parking"></i> <span>SIGAI - Gestión de Aparcamientos</span>
+            <i class="fa fa-parking"></i> <span>SIGAI - Gestión de Aparcamientos</span>
         </a>
     </div>
 
     <!-- Menu Principal -->
     <div>
         <a href="{% url 'usuarios:lista' %}">
-            <i class="fas fa-users"></i> Usuarios
+            <i class="fa fa-users"></i> Usuarios
         </a>
         <a href="{% url 'espacios:lista' %}">
-            <i class="fas fa-parking"></i> Espacios
+            <i class="fa fa-parking"></i> Espacios
         </a>
     </div>
 
@@ -20,7 +20,7 @@
     <div>
         <span>{{ request.session.usuario_login }}</span> <!-- Nombre del usuario -->
         <a href="{% url 'logout' %}">
-            <i class="fas fa-sign-out-alt"></i> Cerrar Sesion
+            <i class="fa fa-sign-out-alt"></i> Cerrar Sesion
         </a>
     </div>
 </nav>

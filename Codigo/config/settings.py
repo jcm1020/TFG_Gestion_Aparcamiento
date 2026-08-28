@@ -120,7 +120,21 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Rutas de archivos estaticos adicionales
+STATICFILES_DIRS = [BASE_DIR / 'static',]
+# Carpeta donde se guardan los staticfiles para produccion
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files (archivos subidos por usuarios)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' #Cuando esta colocada esta linea no es necesario poner Campo Id PrimaryKey en los models
+
+#Añadidos
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'

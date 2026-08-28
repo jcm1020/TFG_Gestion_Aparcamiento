@@ -1,0 +1,236 @@
+/* ===== ESTILOS.CSS - ESTRUCTURA ACTUAL DEL PROYECTO ===== */
+
+/* ===== VARIABLES (Necesarias para los estilos) ===== */
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --dark: #333333;
+    --gray: #6b7280;
+    --border: #d1d5db;
+    --bg: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --white: #ffffff;
+    --radius: 8px;
+}
+
+/* ===== BASICO ===== */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+ 
+body {
+	min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--dark);
+}
+
+/* ===== DASHBOARD (en dashboard.html) ===== */
+h1 { font-size: 24px; margin-bottom: 20px; color: var(--dark); }
+h2 { font-size: 20px; margin-bottom: 20px; color: var(--dark); text-align: left;}
+h3 { font-size: 18px; margin-bottom: 10px; }
+h4 { font-size: 16px; margin-bottom: 8px; }
+
+
+/* ===== FOOTER (en base.html) ===== */
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+footer i { /* Estilos para el footer */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+/* ===== NAVBAR.HTML - SOLO .navbar ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background: var(--white);
+    padding: 0 20px;
+}
+
+.navbar a, .navbar span {
+    text-decoration: none;
+    color: var(--dark);
+}
+
+
+/* ===== INDEX.HTML ===== */
+.hero-subtitle {
+    font-size: 16px;
+    color: var(--gray);
+}
+
+section a {
+    color: var(--primary);
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    display: inline-block;
+    text-decoration: none;
+}
+
+section a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+
+
+
+/* ===== ICONOS (usados en templates/navbar/sidebar) ===== */
+i {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+
+/* ===== LOGIN.HTML Y REGISTRO.HTML ===== */
+.login-container { 	
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+
+}
+
+/* Centrar la tarjeta dentro del container */
+.login-container > .login-card {
+    max-width: 450px;      /* Ancho máximo reducido para centrado visible */
+    width: 100%;
+	margin: auto;          /* Centrado automático horizontal */
+}
+
+/* Para pantallas más pequeñas, la card ocupa todo el ancho disponible */
+@media (max-width: 768px) and (min-width: 480px) {
+    .login-container > .login-card {
+        max-width: 90%;
+        padding: 5px;      /* Reduce ligeramente padding en móvil para mejor visual */
+    }
+}
+
+/* Ajuste para login con gradient (si se usa el bloque extra_css original en login.html o registro.html) */
+.login-container[style*="background: linear-gradient"] {
+    align-items: flex-start; /* Si hay contenido arriba, ajusta alineación */
+}
+
+/* login-card con centrado del contenido */
+.login-card {
+	background: white;
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-header {	
+    text-align: center;
+    margin-bottom: 30px;
+	/* Encabezado centrado verticalmente (si es necesario) */
+	width: 100%;  /* Ocupa todo el ancho para centrar contenido */
+	
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ===== FORMULARIOS (usados en login/registro) ===== */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--dark);
+}
+
+.required::after {
+    content: " *";
+    color: var(--danger);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* ===== BOTONES (usados en login/registro) ===== */
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+/* ===== ALERTAS (usadas en login/registro con Django messages) ===== */
+.alert {
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+.alert-info {
+    background: rgba(37, 99, 235, 0.1);
+    color: #1d4ed8;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #047857;
+}
+
+
+
+
+
+
