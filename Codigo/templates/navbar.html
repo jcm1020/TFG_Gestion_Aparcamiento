@@ -1,25 +1,25 @@
 <nav class="navbar">
-    <!-- Logo -->
+    <!-- Logo y marca -->
     <div>
-        <a href="{% url 'dashboard' %}">
+        <a href="{% url 'dashboard' %}" class="navbar-brand">
             <i class="fa fa-parking"></i> <span>SIGAI - Gestión de Aparcamientos</span>
         </a>
     </div>
 
-    <!-- Menu Principal -->
-    <div>
-        <a href="{% url 'usuarios:lista' %}">
+    <!-- Menu Principal de secciones-->
+    <div class="navbar-menu">
+        <a href="{% url 'usuarios:lista' %}" class="nav-item f1">
             <i class="fa fa-users"></i> Usuarios
         </a>
-        <a href="{% url 'espacios:lista' %}">
+        <a href="{% url 'usuarios:lista' %}" class="nav-item f2">
             <i class="fa fa-parking"></i> Espacios
         </a>
     </div>
 
     <!-- Perfil y Logout -->
-    <div>
-        <span>{{ request.session.usuario_login }}</span> <!-- Nombre del usuario -->
-        <a href="{% url 'logout' %}">
+    <div class="navbar-user">
+        <span><i class="fa fa-user-circle"></i> {{ request.session.usuario_login }}</span> <!-- Nombre del usuario -->
+        <a href="{% url 'usuarios:logout' %}" class="nav-item logout">
             <i class="fa fa-sign-out-alt"></i> Cerrar Sesion
         </a>
     </div>

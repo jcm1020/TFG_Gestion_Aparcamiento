@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*e26ybxlo1llq$97=zr**p*o76iiacbh751*v#_dz0=^)$$qj(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # Añadido para permitir localhost
 
 
 # Application definition
@@ -49,9 +49,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    # Añadimos para autenticacion:
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'

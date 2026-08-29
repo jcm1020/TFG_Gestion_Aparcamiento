@@ -9,8 +9,14 @@ venv/
 env/
 
 # Django
-# db.sqlite3
+db.sqlite3
 media/
 
 # Variables de entorno
 .env
+
+# Documentación interna de desarrollo
+docs/
+
+# Hoja de estilos de referencia (el final es estilos.css)
+static/css/style.css

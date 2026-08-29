@@ -9,59 +9,64 @@
 -->
 {% with request.path as path %}
 
-<!-- 
+	
+<aside class="sidebar">
+
+	<!-- 
     ========================
     SECCION DE USUARIOS (F1)    
     ========================
--->
-<details data-section="F1" {% if '/usuarios/' in path or path == '/' %}open{% endif %}>
-    <summary>
-        <i class="fa fa-users"></i> Usuarios
-    </summary>
+	-->
+	<details data-section="f1" {% if '/usuarios/' in path or path == '/' %}open{% endif %}>
+		<summary>
+			<i class="fa fa-users"></i> Usuarios
+		</summary>
     
-    <ul>
-        <!-- Enlace Activo: Lista -->
-        <li>
-            <a href="{% url 'usuarios:lista' %}" {% if '/usuarios/lista' in path %}class="active"{% endif %}>
-                <i></i> Listado de Usuarios
-            </a>
-        </li>
+		<ul class="sidebar-menu">
+			<!-- Enlace Activo: Lista -->
+			<li>
+				<a href="{% url 'usuarios:lista' %}" {% if '/usuarios/lista' in path %}class="active"{% endif %}>
+					<i></i> Listado de Usuarios
+				</a>
+			</li>
 
-        <!-- Enlace Secundario: Crear -->
-        <li>
-            <a href="{% url 'usuarios:crear' %}" {% if '/usuarios/crear' in path %}class="active"{% endif %}>
-                <i></i> Crear Usuario
-            </a>
-        </li>
-    </ul>
-</details>
+			<!-- Enlace Secundario: Crear -->
+			<li>
+				<a href="{% url 'usuarios:crear' %}" {% if '/usuarios/crear' in path %}class="active"{% endif %}>
+					<i></i> Crear Usuario
+				</a>
+			</li>
+		</ul>
+	</details>
 
-<!-- 
+	<!-- 
     ========================
     SECCION DE ESPACIOS (F2)
     ========================
--->
-<details data-section="F2" {% if '/espacios/' in path %}open{% endif %}>
-    <summary>
-        <i class="fa fa-parking"></i> Espacios
-    </summary>
+	-->
+	<details data-section="f2" {% if '/espacios/' in path %}open{% endif %}>
+		<summary>
+			<i class="fa fa-parking"></i> Espacios
+		</summary>
     
-    <ul>
-        <!-- Enlace Activo: Lista -->
-        <li>
-            <a href="{% url 'espacios:lista' %}" {% if '/espacios/' == path %}class="active"{% endif %}>
-                <i></i> Listado de Espacios
-            </a>
-        </li>
+		<ul class="sidebar-menu">
 
-        <!-- Enlace Secundario: Crear -->
-        <li>
-            <a href="{% url 'espacios:crear' %}" {% if '/espacios/crear' in path %}class="active"{% endif %}>
-                <i></i> Crear Espacio
-            </a>
-        </li>
-    </ul>
-</details>
+			<!-- Enlace Activo: Lista -->
+			<li>
+				<a href="{% url 'usuarios:lista' %}" {% if '/espacios/' in path %}class="active"{% endif %}>
+					<i></i> Listado de Espacios
+				</a>
+			</li>
+
+			<!-- Enlace Secundario: Crear -->
+			<li>
+				<a href="{% url 'usuarios:crear' %}" {% if '/espacios/crear' in path %}class="active"{% endif %}>
+					<i></i> Crear Espacio
+				</a>
+			</li>
+		</ul>
+	</details>
+</aside>
 
 {% endwith %}
 

@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE hmtl>
+<!DOCTYPE html>
 <html lang="es">
 
 	<head>
@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 		
 		<!-- --- CARGA DEL FICHERO DE ESTILOS PRINCIPAL --- -->
-		<link rel="stylesheet" href={% static 'css/estilos.css' %}>
+		<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 		
 		<!-- 
 			OPCIONAL: Si se requieren estilos especificos en alguna página(paginas de login y registro).
@@ -43,21 +43,22 @@
 			-->
 			<div class="layout">
             
-            <!-- INSERCION DEL SIDEBAR FIJO -->
-            <!-- Lo colocamos aqui para que se vea en todas las paginas -->
-            {% include 'sidebar.html' %} 
+				<!-- INSERCION DEL SIDEBAR FIJO -->
+				<!-- Lo colocamos aqui para que se vea en todas las paginas -->
+				{% include 'sidebar.html' %} 
 			
 			
-			<!-- 
-                BLOQUE CLAVE DE EXTENSION
-                Aquí es donde se inyecta el contenido de la pagina concreta, 
-				por ejemplo: `dashboard.html` o `usuarios:lista.html` inyectaran su contenido.
-                Si no se usa en un archivo, aquí aparecera vacio.
-            -->
-			{% block contenido %}{% endblock %}
+				<!-- 
+					BLOQUE CLAVE DE EXTENSION
+					Aquí es donde se inyecta el contenido de la pagina concreta, 
+					por ejemplo: `dashboard.html` o `usuarios:lista.html` inyectaran su contenido.
+					Si no se usa en un archivo, aquí aparecera vacio.
+				-->
+				<main class="main-content">
+				{% block contenido %}{% endblock %}
+				</main>
 			
-			</div>
-			
+			</div>		
 			
 		
 		{% else %}
