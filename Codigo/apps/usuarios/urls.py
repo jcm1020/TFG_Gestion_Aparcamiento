@@ -16,7 +16,7 @@ urlpatterns = [
     path('registro/', views.registro_view, name='registro'),
     
     # Logout
-    path('logout/', views.logout_view, name='logout'),   # 🔥ruta para cerrar sesión
+    path('logout/', views.logout_view, name='logout'),   # ruta para cerrar sesión
 
     # CRUD Usuarios (F1)
     path('lista/', views.lista_usuarios, name='lista'),
