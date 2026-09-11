@@ -1,13 +1,12 @@
 from django.shortcuts import render
 
 from .models import Usuarios
-from .forms import UsuariosForm
+from .forms import UsuariosForm, RegistroForm, LoginForm
 
 from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
-from .forms_auth import RegistroForm, LoginForm
 
 
 # Create your views here.
@@ -178,7 +177,6 @@ def lista_usuarios(request):
         'inactivos': inactivos,
         'nivel_basico': nivel_basico,
         'nivel_admin': nivel_admin,
-    })    
-
+    })
 
 
