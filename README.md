@@ -6,3 +6,5 @@ De mantener permanencia alguno de estos datos, solo lo podra visualizar el admin
 # Credenciales para SuperUsuario:
 login:admin
 password:changeme
+# Esquema de la base de datos simplificada:
+![Esquema relacional de la base de datos](/images/Esquema entidad-relacion de la base de datos3.jpg)
