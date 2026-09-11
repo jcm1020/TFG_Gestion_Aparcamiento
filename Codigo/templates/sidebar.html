@@ -17,7 +17,7 @@
     SECCION DE USUARIOS (F1)    
     ========================
 	-->
-	<details data-section="f1" {% if '/usuarios/' in path or path == '/' %}open{% endif %}>
+	<details class="sidebar-section" data-section="f1" {% if '/usuarios/' in path or path == '/' %}open{% endif %}>
 		<summary>
 			<i class="fa fa-users"></i> Usuarios
 		</summary>
@@ -26,14 +26,14 @@
 			<!-- Enlace Activo: Lista -->
 			<li>
 				<a href="{% url 'usuarios:lista' %}" {% if '/usuarios/lista' in path %}class="active"{% endif %}>
-					<i></i> Listado de Usuarios
+					<i class="fa fa-list"></i> Listado de Usuarios
 				</a>
 			</li>
 
 			<!-- Enlace Secundario: Crear -->
 			<li>
 				<a href="{% url 'usuarios:crear' %}" {% if '/usuarios/crear' in path %}class="active"{% endif %}>
-					<i></i> Crear Usuario
+					<i class="fa fa-plus-circle"></i> Crear Usuario
 				</a>
 			</li>
 		</ul>
@@ -44,7 +44,7 @@
     SECCION DE ESPACIOS (F2)
     ========================
 	-->
-	<details data-section="f2" {% if '/espacios/' in path %}open{% endif %}>
+	<details class="sidebar-section" data-section="f2" {% if '/espacios/' in path %}open{% endif %}>
 		<summary>
 			<i class="fa fa-parking"></i> Espacios
 		</summary>
@@ -54,14 +54,14 @@
 			<!-- Enlace Activo: Lista -->
 			<li>
 				<a href="{% url 'usuarios:lista' %}" {% if '/espacios/' in path %}class="active"{% endif %}>
-					<i></i> Listado de Espacios
+					<i class="fa fa-list"></i> Listado de Espacios
 				</a>
 			</li>
 
 			<!-- Enlace Secundario: Crear -->
 			<li>
 				<a href="{% url 'usuarios:crear' %}" {% if '/espacios/crear' in path %}class="active"{% endif %}>
-					<i></i> Crear Espacio
+					<i class="fa fa-plus-circle"></i> Crear Espacio
 				</a>
 			</li>
 		</ul>

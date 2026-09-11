@@ -21,7 +21,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-#from apps.usuarios.views import registro_view, login_view, logout_view
+from apps.usuarios.views import registro_view, login_view, logout_view
 
 # Python busca dashboard_view al evaluar las rutas, 
 # pero como está definida arriba antes, existe, 

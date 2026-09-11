@@ -3,6 +3,7 @@
 {% block titulo %}Registro{% endblock %}
 
 {% block contenido_login %}
+<div class="color-fondo">
 <div class="login-container">
     <div class="login-card">
         <div class="login-header">
@@ -79,5 +80,6 @@
             <p>Ya tienes cuenta? <a href="{% url 'usuarios:login' %}">Inicia sesion</a></p>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

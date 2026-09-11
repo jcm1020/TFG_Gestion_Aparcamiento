@@ -1,52 +1,49 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block contenido_login %}
-	
-	<section>
-	
-		<h1>SIGAI - Sistema de Gestion de Aparcamientos Inteligentes</h1>
-		
-		<p class="hero-subtitle">
-                Plataforma integral para la monitorizacion y control de parking.<br>
-                Fase 1: Gestion de Usuarios (F1).
-        </p>
-        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-            <a href="{% url 'usuarios:login' %}">
-                    <i></i>Iniciar Sesion
-            </a>
-            <a href="{% url 'usuarios:registro' %}">
-                    <i></i>Registrarse
-            </a>
-        </div>
-	</section>
-	
-	<section>
-		<h2>Estadisticas del sistema</h2>
-		
-		<div>
-		
-			<div>
-				<p>Administradores</p>
-			</div>
-			<div>
-				<p>Camaras Activas</p>
-			</div>
-			<div>
-				<p>Imagenes Capturadas</p>
-			</div>
-			<div>
-				<p>Objetos Reconocidos</p>
-			</div>
-			
-			<div>
-				<a href="{% url 'usuarios:login' %}">
-					<i></i> Iniciar Sesion 
-				</a>
-			</div>
-			
-		</div>
-	
-	</section>
+<div class="color-fondo">
+<div class="hero">
+	<h1>SIGAI - Sistema de Gestión de Aparcamientos Inteligentes</h1>
+    <p class="hero-subtitle">
+        Plataforma integral para la monitorización y control de parking.<br>
+        <!-- Fase 1: Gestión de Usuarios (F1). -->
+    </p>
+	<!-- <img src="https://picsum.photos/1200/400?random" alt="Parking inteligente" class="hero-image"> -->
+    <img src="{% static 'img/pexels-photo-2655864.avif' %}"
+     alt="Aparcamiento inteligente" class="hero-image">
+    <div class="hero-actions">
+        <a href="{% url 'usuarios:login' %}" class="btn btn-primary btn-lg">
+            <i class="fa fa-sign-in-alt"></i> Iniciar Sesión
+        </a>
+        <a href="{% url 'usuarios:registro' %}" class="btn btn-secondary btn-lg">
+            <i class="fa fa-user-plus"></i> Registrarse
+        </a>
+    </div>
+</div>
 
-
+<section class="feature-grid">
+    <div class="feature-card">
+        <i class="fas fa-user-shield"></i>
+        <h3>Administradores</h3>
+        <p>Control de accesos y permisos del núcleo.</p>
+    </div>
+    <div class="feature-card">
+        <i class="fa fa-video"></i>
+        <h3>Cámaras Activas</h3>
+        <p>Monitorización en tiempo real del parking.</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-camera"></i>
+        <h3>Imágenes Capturadas</h3>
+        <p>Evidencia visual de cada evento.</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-robot"></i>
+        <h3>Objetos Reconocidos</h3>
+        <p>Detección inteligente de matrículas.</p>
+    </div>
+</section>
+</div>
 {% endblock %}
