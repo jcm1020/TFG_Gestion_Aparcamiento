@@ -179,5 +179,107 @@ def lista_usuarios(request):
         'nivel_admin': nivel_admin,
     })
 
+def crear_usuario(request):
+    """Crea un nuevo usuario del sistema (solo para administradores)."""
+    
+    if request.session.get('usuario_nivel', 0) != 2:
+        messages.error(request, 'Solo los administradores pueden crear usuarios.')
+        return redirect('usuarios:lista')
+
+    if request.method == 'POST':
+        form = UsuariosForm(request.POST)
+
+        if form.is_valid():
+            # Recuperar email/login y verificar duplicados antes de guardar
+            email = form.cleaned_data.get('email')
+            login = form.cleaned_data.get('login')
+
+            if Usuarios.objects.filter(email=email).exists():
+                form.add_error('email', 'Este correo electrónico ya está registrado.')
+                return render(request, 'usuarios/crear.html', {'form': form})
+
+            if Usuarios.objects.filter(login=login).exists():
+                form.add_error('login', 'Este nombre de usuario ya está en uso.')
+                return render(request, 'usuarios/crear.html', {'form': form})
+
+            # Guarda en memoria pero no en BD todavia
+            usuario = form.save(commit=False)
+
+            # Procesa la contraseña
+            password = form.cleaned_data.get('nueva_password')
+            if password:
+                usuario.password = make_password(password)  # Hashea la contraseña
+            else:
+                usuario.password = make_password('changeme123')  # Default si no puso nada
+
+            usuario.save()
+
+            messages.success(request, f'Usuario {usuario.nombre} creado correctamente.')
+            return redirect('usuarios:lista')
+    else:
+        form = UsuariosForm()
+
+    return render(request, 'usuarios/crear.html', {'form': form})
+    
+    
+
+def editar_usuario(request, pk):
+    """Edita un usuario existente (solo administradores)."""
+    
+    if request.session.get('usuario_nivel', 0) != 2:
+        messages.error(request, 'Solo los administradores pueden editar usuarios.')
+        return redirect('usuarios:lista')
+
+    usuario = get_object_or_404(Usuarios, pk=pk)
+
+    if request.method == 'POST':
+        form = UsuariosForm(request.POST, instance=usuario)
+
+        if form.is_valid():
+            # Recuperar email/login y verificar duplicados antes de guardar (excluyendo el propio usuario)
+            email = form.cleaned_data.get('email')
+            login = form.cleaned_data.get('login')
+            if Usuarios.objects.filter(email=email).exclude(pk=pk).exists():
+                form.add_error('email', 'Este correo electrónico ya está registrado.')
+                return render(request, 'usuarios/editar.html', {'form': form, 'usuario': usuario})
+            if Usuarios.objects.filter(login=login).exclude(pk=pk).exists():
+                form.add_error('login', 'Este nombre de usuario ya está en uso.')
+                return render(request, 'usuarios/editar.html', {'form': form, 'usuario': usuario})
+
+            # Guarda en memoria sin commit
+            usuario = form.save(commit=False)
+
+            # Solo actualiza password si se proporciono una nueva
+            nueva_password = form.cleaned_data.get('nueva_password')
+            if nueva_password:
+                usuario.password = make_password(nueva_password)
+            # Si esta vacio, NO tocamos el password actual
+
+            usuario.save()
+
+            messages.success(request, f'Usuario {usuario.nombre} actualizado correctamente.')
+            return redirect('usuarios:lista')
+    else:
+        form = UsuariosForm(instance=usuario)
+
+    return render(request, 'usuarios/editar.html', {
+        'form': form,
+        'usuario': usuario
+    })
+    
+    
+def eliminar_usuario(request, pk):
+    """Elimina un usuario (solo administradores).""" 
+    
+    if request.session.get('usuario_nivel', 0) != 2:
+        messages.error(request, 'Solo los administradores pueden eliminar usuarios.')
+        return redirect('usuarios:lista')
+
+    usuario = get_object_or_404(Usuarios, pk=pk)
+    nombre = usuario.nombre
+    usuario.delete()
+
+    messages.success(request, f'Usuario {nombre} eliminado correctamente.')
+    return redirect('usuarios:lista')
 
 
