@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Listado de Espacios{% endblock %}
+
+{% block contenido %}
+<div class="container">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <i class="fas fa-info-circle"></i> {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="page-header f2">
+        <div>
+            <h2 style="margin: 0;">
+                <i class="fas fa-parking"></i> 2 - Gestión de Espacios
+            </h2>
+            <p style="margin: 5px 0 0; color: var(--gray); font-size: 14px;">
+                Administra los espacios físicos del aparcamiento
+            </p>
+
+            <div class="stats-cards inline" style="margin-top: 15px;">
+                <div class="card stat-card">
+                    <div class="stat-value" style="color: var(--primary);">
+                        {{ total }}
+                    </div>
+                    <div class="stat-label">Total</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value" style="color: var(--success);">
+                        {{ con_ubicacion|default:"0" }}
+                    </div>
+                    <div class="stat-label">Con ubicación</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value" style="color: var(--danger);">
+                        {{ sin_ubicacion" }}
+                    </div>
+                    <div class="stat-label">Sin ubicación</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <form method="get" class="view-toggle">
+                <button type="submit" name="view" value="grid"
+                        class="{% if vista == 'grid' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i> Tarjetas
+                </button>
+
+                <button type="submit" name="view" value="list"
+                        class="{% if vista == 'list' %}active{% endif %}">
+                    <i class="fas fa-list"></i> Lista
+                </button>
+            </form>
+
+            {% if request.session.usuario_nivel == 2 %}
+                <a href="{% url 'espacios:crear' %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nuevo Espacio
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fas fa-map-marked-alt"></i> Localización
+            </div>
+
+            {% if request.session.usuario_nivel == 2 %}
+                <button type="button"
+                        id="btnEditarLocalizacion"
+                        class="btn btn-primary">
+                    <i class="fas fa-pen"></i> Editar Localización
+                </button>
+            {% endif %}
+        </div>
+
+        <div class="card-meta">
+            {{ localizacion.nombre }}
+        </div>
+
+        {% if localizacion.descripcion %}
+            <p style="margin: 5px 0 0;">{{ localizacion.descripcion }}</p>
+        {% endif %}
+    </div>
+
+    {% if espacios %}
+
+        {% if vista == 'grid' %}
+            <div class="cards-grid lista-grid">
+        {% else %}
+            <div class="cards-grid lista-list">
+                <div class="lista-list-header">
+                    <div class="col-title">Espacio</div>
+                    <div class="col-meta">
+                        <span>Ubicación</span>
+                        <span>Descripción</span>
+                        <span>Creado</span>
+                    </div>
+                    <div class="col-actions">Acciones</div>
+                </div>
+        {% endif %}
+
+        {% for espacio in espacios %}
+            <div class="card">
+                <div class="card-header col-title">
+                    <div class="card-title">
+                        <div class="card-icon card-icon-primary">
+                            <i class="fas fa-parking"></i>
+                        </div>
+                        {{ espacio.nombre }}
+                    </div>
+                </div>
+
+                <div class="card-meta col-meta">
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ espacio.ubicacion|default:"-" }}
+                    </p>
+                    <p>
+                        <i class="fas fa-align-left"></i>
+                        {{ espacio.descripcion }}
+                    </p>
+                    <p>
+                        <i class="fas fa-calendar"></i>
+                        {{ espacio.fecha_creacion" }}
+                    </p>
+                </div>
+
+                {% if request.session.usuario_nivel == 2 %}
+                    <div class="card-footer col-actions">
+                        <div class="actions">
+                            <a href="{% url 'espacios:editar' espacio.id %}"
+                               class="btn btn-primary"
+                               title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <form method="post"
+                                  action="{% url 'espacios:eliminar' espacio.id %}"
+                                  style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-danger"
+                                        title="Eliminar"
+                                        onclick="return confirm('¿Eliminar este espacio?');">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        </div>
+
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            No hay espacios registrados.
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
