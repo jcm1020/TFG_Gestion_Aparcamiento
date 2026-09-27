@@ -57,6 +57,7 @@ urlpatterns = [
     path('', include('apps.usuarios.urls', namespace='usuarios')),    
     # Ruta específica para el dashboard (si no se accede por navbar)
     path('dashboard/', dashboard_view, name='dashboard'),
+    path('espacios/', include('apps.espacios.urls', namespace='espacios')),
 
 ]
 
