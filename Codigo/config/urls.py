@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from apps.usuarios.views import registro_view, login_view, logout_view
 
+from config.permissions import sesion_requerida
+
+from apps.usuarios.views import index
+
 # Python busca dashboard_view al evaluar las rutas, 
 # pero como está definida arriba antes, existe, 
 # si la ponemos más abajo en el mismo archivo, 
@@ -34,6 +38,7 @@ urlpatterns = [
     path('dashboard/', local_views.dashboard_view, name='dashboard'),  # USAR CON ALIAS
 ]
 '''
+@sesion_requerida
 def dashboard_view(request):
     """Dashboard principal del sistema."""
     from apps.usuarios.models import Usuarios
@@ -54,12 +59,18 @@ urlpatterns = [
     # Panel de administración Django
     path('admin/', admin.site.urls),
     # Aplicación usuarios - incluye todas las rutas de usuarios
-    path('', include('apps.usuarios.urls', namespace='usuarios')),    
+    # path('', include('apps.usuarios.urls', namespace='usuarios')), 
+    # Aplicación usuarios - prefijo /usuarios/
+    path('usuarios/', include('apps.usuarios.urls', namespace='usuarios')),
     # Ruta específica para el dashboard (si no se accede por navbar)
     path('dashboard/', dashboard_view, name='dashboard'),
+    # Ruta para los espacios
     path('espacios/', include('apps.espacios.urls', namespace='espacios')),
+    # Portada pública. Va la última: path('') no debe capturar los includes de arriba.
+    path('', index, name='indice'),
 
 ]
+
 
 # Servir archivos estáticos y media en desarrollo
 '''if settings.DEBUG:

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'apps.usuarios', #Añadida aplicacion usuarios
-    'apps.espacios',
+    'apps.espacios', #Añadida aplicacion espacios
 ]
 
 MIDDLEWARE = [
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  #Con los decoradores esto no se aplica
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -136,6 +136,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' #Cuando esta colocada esta linea no es necesario poner Campo Id PrimaryKey en los models
 
 #Añadidos
-LOGIN_URL = '/login/'
+#LOGIN_URL = '/login/'
+LOGIN_URL = '/usuarios/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/login/'
+#LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/usuarios/login/'
