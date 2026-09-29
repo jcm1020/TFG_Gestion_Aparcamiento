@@ -8,6 +8,9 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 
+from django.views.decorators.http import require_POST
+from config.permissions import administrador_requerida, sesion_requerida
+
 
 # Create your views here.
 
@@ -36,8 +39,8 @@ def registro_view(request):
         # Los metodos clean() se llaman automaticamente en form.is_valid()
         if form.is_valid():
             try:
-                email = form.cleaned_data['email']
-                login = form.cleaned_data['login']
+                email = form.cleaned_data['email'] # sin usar de momento
+                login = form.cleaned_data['login'] # sin usar de momento
 
                 usuario = form.save(commit=False)
                 password = form.cleaned_data.get('password1')
@@ -73,13 +76,16 @@ def registro_view(request):
                     usuario.nivel_acceso = 2  # Administrador
                 else:
                     usuario.nivel_acceso = 1  # Nivel básico por defecto
+                # Por defecto el usuario es marcado como no activo, el administrador se encarga de cambiarlo por seguridad    
+                usuario.activo = False
                 usuario.save()
 
                 # Verificacion opcional (solo desarrollo): comprobar el hash guardado
                 # check_password(password, Usuarios.objects.get(login=login).password)
 
-                messages.success(request, 'Usuario creado correctamente. Inicia sesión.')
-                return redirect('login')
+                #messages.success(request, 'Usuario creado correctamente. Inicia sesión.')
+                messages.success(request, 'Usuario creado correctamente. La cuenta está inactiva hasta que un administrador la active.')
+                return redirect('usuarios:login')
 
             except Exception as e:
                 messages.error(request, f'Error al crear usuario: {str(e)}')
@@ -149,8 +155,9 @@ def logout_view(request):
     """Cierra la sesion del usuario."""
     request.session.flush()
     messages.success(request, 'Sesión cerrada correctamente.')
-    return redirect('login')
+    return redirect('usuarios:login')
 
+@sesion_requerida
 def lista_usuarios(request):
     """Lista todos los usuarios del sistema."""
     # 1. Parametro 'view' de la URL (ej: ?view=grid). Por defecto 'list'
@@ -179,38 +186,44 @@ def lista_usuarios(request):
         'nivel_admin': nivel_admin,
     })
 
+@administrador_requerida
 def crear_usuario(request):
     """Crea un nuevo usuario del sistema (solo para administradores)."""
     
-    if request.session.get('usuario_nivel', 0) != 2:
-        messages.error(request, 'Solo los administradores pueden crear usuarios.')
-        return redirect('usuarios:lista')
+    #if request.session.get('usuario_nivel', 0) != 2:
+    #    messages.error(request, 'Solo los administradores pueden crear usuarios.')
+    #    return redirect('usuarios:lista')
 
     if request.method == 'POST':
         form = UsuariosForm(request.POST)
 
         if form.is_valid():
             # Recuperar email/login y verificar duplicados antes de guardar
-            email = form.cleaned_data.get('email')
-            login = form.cleaned_data.get('login')
+            #email = form.cleaned_data.get('email')
+            #login = form.cleaned_data.get('login')
+            
+            # email es unique=True (ver models.py), el ModelForm ya valida se comenta este if ya no necesario
+            #if Usuarios.objects.filter(email=email).exists():
+            #    form.add_error('email', 'Este correo electrónico ya está registrado.')
+            #    return render(request, 'usuarios/crear.html', {'form': form})
 
-            if Usuarios.objects.filter(email=email).exists():
-                form.add_error('email', 'Este correo electrónico ya está registrado.')
-                return render(request, 'usuarios/crear.html', {'form': form})
-
-            if Usuarios.objects.filter(login=login).exists():
-                form.add_error('login', 'Este nombre de usuario ya está en uso.')
-                return render(request, 'usuarios/crear.html', {'form': form})
+            # igual que email, es unique=True
+            #if Usuarios.objects.filter(login=login).exists():
+            #    form.add_error('login', 'Este nombre de usuario ya está en uso.')
+            #    return render(request, 'usuarios/crear.html', {'form': form})
 
             # Guarda en memoria pero no en BD todavia
-            usuario = form.save(commit=False)
+            #usuario = form.save(commit=False) # form.save() ya guarda; el hash lo pone nuestro save() finalmente
+            
+            
 
             # Procesa la contraseña
-            password = form.cleaned_data.get('nueva_password')
-            if password:
-                usuario.password = make_password(password)  # Hashea la contraseña
-            else:
-                usuario.password = make_password('changeme123')  # Default si no puso nada
+            # Ya no hace falta lo pasamos a form.save()
+            #password = form.cleaned_data.get('nueva_password')
+            #if password:
+            #    usuario.password = make_password(password)  # Hashea la contraseña
+            #else:
+            #    usuario.password = make_password('changeme123')  # Default si no puso nada
 
             usuario.save()
 
@@ -222,13 +235,13 @@ def crear_usuario(request):
     return render(request, 'usuarios/crear.html', {'form': form})
     
     
-
+@administrador_requerida
 def editar_usuario(request, pk):
     """Edita un usuario existente (solo administradores)."""
     
-    if request.session.get('usuario_nivel', 0) != 2:
-        messages.error(request, 'Solo los administradores pueden editar usuarios.')
-        return redirect('usuarios:lista')
+    #if request.session.get('usuario_nivel', 0) != 2:
+    #    messages.error(request, 'Solo los administradores pueden editar usuarios.')
+    #    return redirect('usuarios:lista')
 
     usuario = get_object_or_404(Usuarios, pk=pk)
 
@@ -237,6 +250,7 @@ def editar_usuario(request, pk):
 
         if form.is_valid():
             # Recuperar email/login y verificar duplicados antes de guardar (excluyendo el propio usuario)
+            '''
             email = form.cleaned_data.get('email')
             login = form.cleaned_data.get('login')
             if Usuarios.objects.filter(email=email).exclude(pk=pk).exists():
@@ -245,14 +259,15 @@ def editar_usuario(request, pk):
             if Usuarios.objects.filter(login=login).exclude(pk=pk).exists():
                 form.add_error('login', 'Este nombre de usuario ya está en uso.')
                 return render(request, 'usuarios/editar.html', {'form': form, 'usuario': usuario})
-
+            '''
             # Guarda en memoria sin commit
+            # Si nueva_password viene vacia, UsuariosForm.save() conserva el hash
             usuario = form.save(commit=False)
 
             # Solo actualiza password si se proporciono una nueva
-            nueva_password = form.cleaned_data.get('nueva_password')
-            if nueva_password:
-                usuario.password = make_password(nueva_password)
+            #nueva_password = form.cleaned_data.get('nueva_password')
+            #if nueva_password:
+            #    usuario.password = make_password(nueva_password)
             # Si esta vacio, NO tocamos el password actual
 
             usuario.save()
@@ -267,13 +282,14 @@ def editar_usuario(request, pk):
         'usuario': usuario
     })
     
-    
+@administrador_requerida
+@require_POST    
 def eliminar_usuario(request, pk):
     """Elimina un usuario (solo administradores).""" 
     
-    if request.session.get('usuario_nivel', 0) != 2:
-        messages.error(request, 'Solo los administradores pueden eliminar usuarios.')
-        return redirect('usuarios:lista')
+    #if request.session.get('usuario_nivel', 0) != 2:
+    #    messages.error(request, 'Solo los administradores pueden eliminar usuarios.')
+    #    return redirect('usuarios:lista')
 
     usuario = get_object_or_404(Usuarios, pk=pk)
     nombre = usuario.nombre
