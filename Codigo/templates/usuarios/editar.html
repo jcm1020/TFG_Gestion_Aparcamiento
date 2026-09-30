@@ -144,10 +144,16 @@
                  Si se introduce un valor, se actualiza la contraseña.
                  ===================================================== -->
             <div class="form-group">
-                <label for="id_nueva_password">Nueva Contrasena</label>
+                <label for="id_nueva_password">Nueva Contraseña</label>
                 {{ form.nueva_password }}
                 <small style="color: var(--gray);">Dejar en blanco para mantener la actual.</small>
             </div>
+			
+			<!-- Campo opcional: confirmar la nueva contraseña, vacio = se mantiene la actual -->
+			<div class="form-group">
+					<label for="id_confirmar_password">Confirmar Contraseña</label>
+					{{ form.confirmar_password }}
+			</div>
 			
 			<!-- Campo obligatorio: nivel de acceso (rol del usuario) -->
             <div class="form-group">

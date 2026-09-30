@@ -156,6 +156,12 @@
                 {{ form.nueva_password }}
             </div>
 			
+			<!-- Campo obligatorio: confirmacion de la contraseña -->
+			<div class="form-group">
+				<label for="id_confirmar_password" class="required">Confirmar Contraseña</label>
+					{{ form.confirmar_password }}
+			</div>
+			
 			<!-- Campo obligatorio: nivel de acceso (rol del usuario) -->
             <div class="form-group">
                 <label for="id_nivel_acceso" class="required">Nivel de Acceso</label>

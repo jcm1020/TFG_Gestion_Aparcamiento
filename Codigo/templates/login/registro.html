@@ -16,11 +16,11 @@
         <div class="alert alert-danger">
             {% for field in form %}
                 {% for error in field.errors %}
-                    <p style="margin: 0;">{{ error }}</p>
+                    <p style="margin: 0;"><strong>{{ field.label }}:{{ error }}</strong></p>
                 {% endfor %}
             {% endfor %}
             {% for error in form.non_field_errors %}
-                <p style="margin: 0;">{{ error }}</p>
+                <p style="margin: 0;"><strong>{{ field.label }}:{{ error }}</strong></p>
             {% endfor %}
         </div>
         {% endif %}
