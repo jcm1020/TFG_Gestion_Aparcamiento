@@ -18,7 +18,6 @@
      - form-actions: botones de submit y cancelar.
      ============================================================ -->
 <div class="container">
-	
 	<!-- =====================================================
          CABECERA DE LA PAGINA
          Bloque page-header con fondo degradado y borde izquierdo
@@ -26,7 +25,7 @@
          - Columna izquierda: titulo con icono + descripcion.
          - Columna derecha: boton para volver al listado.
          ===================================================== -->
-    <div class="page-header f1">
+	<div class="page-header f1">
 		<!-- Columna izquierda: titulo y descripcion de la pagina -->
         <div>
             <h2 style="margin: 0;"><i class="fas fa-user-shield"></i> 1 - Crear Administrador</h2>
@@ -41,8 +40,10 @@
         </div>
 		
     </div>
-
-    <!-- =====================================================
+	
+    <!-- <h2><i class="fas fa-user-shield"></i> Crear Cuenta de Administrador</h2> -->
+	
+	<!-- =====================================================
          BLOQUE DE ERRORES DEL FORMULARIO
          Muestra los errores de validacion del formulario por
          campo (ej: campos vacios, formato invalido) y los
@@ -61,8 +62,8 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- =====================================================
+	
+	<!-- =====================================================
          BLOQUE DE MENSAJES DEL SISTEMA
          Muestra mensajes de exito, advertencia o error enviados
          desde la vista mediante el messages framework de Django.
@@ -74,8 +75,8 @@
         </div>
         {% endfor %}
     {% endif %}
-
-    <!-- =====================================================
+	
+	<!-- =====================================================
          FORMULARIO DE CREACION DE USUARIO
          Metodo POST para enviar los datos de forma segura.
          Incluye el token CSRF para proteccion contra ataques
@@ -83,8 +84,8 @@
          ===================================================== -->
     <form method="post">
         {% csrf_token %}
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              SECCION 1: DATOS PERSONALES
              Campos basicos de identificacion del usuario.
              - Nombre, apellidos y email: obligatorios (marcados con *).
@@ -96,39 +97,40 @@
                     <i class="fas fa-user"></i> Datos Personales
                 </div>
             </div>
-
-            <!-- Campo obligatorio: nombre del usuario -->
+			
+			<!-- Campo obligatorio: nombre del usuario -->
             <div class="form-group">
                 <label for="id_nombre" class="required">Nombre</label>
                 {{ form.nombre }}
             </div>
-
-            <!-- Campo obligatorio: apellidos del usuario -->
+			
+			<!-- Campo obligatorio: apellidos del usuario -->
             <div class="form-group">
                 <label for="id_apellidos" class="required">Apellidos</label>
                 {{ form.apellidos }}
             </div>
-
-            <!-- Campo obligatorio: correo electronico unico -->
+			
+			<!-- Campo obligatorio: correo electronico unico -->
             <div class="form-group">
                 <label for="id_email" class="required">Correo Electronico</label>
                 {{ form.email }}
             </div>
-
-            <!-- Campo opcional: numero de telefono -->
+			
+			<!-- Campo opcional: numero de telefono -->
             <div class="form-group">
                 <label for="id_telefono">Telefono</label>
                 {{ form.telefono }}
             </div>
-
-            <!-- Campo opcional: direccion fisica -->
+			
+			<!-- Campo opcional: direccion fisica -->
             <div class="form-group">
                 <label for="id_direccion">Direccion</label>
                 {{ form.direccion }}
             </div>
         </div>
-
-        <!-- =====================================================
+		
+		
+		<!-- =====================================================
              SECCION 2: CREDENCIALES DE ACCESO
              Campos para configurar el acceso del usuario al sistema.
              - Login: nombre de usuario unico para autenticacion.
@@ -141,27 +143,27 @@
                     <i class="fas fa-key"></i> Credenciales de Acceso
                 </div>
             </div>
-
-            <!-- Campo obligatorio: login (nombre de usuario unico) -->
+			
+			<!-- Campo obligatorio: login (nombre de usuario unico) -->
             <div class="form-group">
                 <label for="id_login" class="required">Login</label>
                 {{ form.login }}
             </div>
-
-            <!-- Campo obligatorio: contraseña de acceso -->
+			
+			<!-- Campo obligatorio: contraseña de acceso -->
             <div class="form-group">
                 <label for="id_nueva_password" class="required">Contraseña</label>
                 {{ form.nueva_password }}
             </div>
-
-            <!-- Campo obligatorio: nivel de acceso (rol del usuario) -->
+			
+			<!-- Campo obligatorio: nivel de acceso (rol del usuario) -->
             <div class="form-group">
                 <label for="id_nivel_acceso" class="required">Nivel de Acceso</label>
                 {{ form.nivel_acceso }}
             </div>
         </div>
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              SECCION 3: INFORMACION ADICIONAL
              Campos complementarios no obligatorios.
              - Comentarios: texto libre para notas sobre el usuario.
@@ -172,26 +174,26 @@
                     <i class="fas fa-info-circle"></i> Informacion Adicional
                 </div>
             </div>
-
-            <!-- Campo opcional: comentarios o notas sobre el usuario -->
+			
+			<!-- Campo opcional: comentarios o notas sobre el usuario -->
             <div class="form-group">
                 <label for="id_comentarios">Comentarios</label>
                 {{ form.comentarios }}
             </div>
         </div>
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              BOTONES DE ACCION DEL FORMULARIO
              - "Crear Administrador": envia el formulario para crear
                el nuevo usuario con los datos introducidos.
              - "Volver": cancela la creacion y retorna al listado.
              ===================================================== -->
         <div class="form-actions">
-            <!-- Boton de submit: crea el usuario -->
+			<!-- Boton de submit: crea el usuario -->
             <button type="submit" class="btn btn-success">
                 <i class="fas fa-check"></i> Crear Administrador
             </button>
-            <!-- Boton de cancelar: vuelve al listado de usuarios -->
+			<!-- Boton de cancelar: vuelve al listado de usuarios -->
             <a href="{% url 'usuarios:lista' %}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>

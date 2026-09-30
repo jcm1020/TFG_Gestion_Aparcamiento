@@ -19,7 +19,6 @@
      - form-actions: botones de guardar y cancelar.
      ============================================================ -->
 <div class="container">
-	
 	<!-- =====================================================
          CABECERA DE LA PAGINA
          Bloque page-header con fondo degradado y borde izquierdo
@@ -42,8 +41,9 @@
         </div>
 		
     </div>
+    <!-- <h2><i class="fas fa-user-edit"></i> Editar Cuenta de Administrador</h2> -->
 
-    <!-- =====================================================
+	<!-- =====================================================
          BLOQUE DE ERRORES DEL FORMULARIO
          Muestra los errores de validacion del formulario por
          campo (ej: campos vacios, formato invalido) y los
@@ -62,8 +62,8 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- =====================================================
+	
+	<!-- =====================================================
          FORMULARIO DE EDICION DE USUARIO
          Metodo POST para enviar los datos modificados.
          Incluye el token CSRF para proteccion contra ataques
@@ -71,8 +71,8 @@
          ===================================================== -->
     <form method="post">
         {% csrf_token %}
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              SECCION 1: DATOS PERSONALES
              Campos basicos de identificacion del usuario.
              - Nombre, apellidos y email: obligatorios (marcados con *).
@@ -84,39 +84,39 @@
                     <i class="fas fa-user"></i> Datos Personales
                 </div>
             </div>
-
-            <!-- Campo obligatorio: nombre del usuario -->
+			
+			<!-- Campo obligatorio: nombre del usuario -->
             <div class="form-group">
                 <label for="id_nombre" class="required">Nombre</label>
                 {{ form.nombre }}
             </div>
-
-            <!-- Campo obligatorio: apellidos del usuario -->
+			
+			<!-- Campo obligatorio: apellidos del usuario -->
             <div class="form-group">
                 <label for="id_apellidos" class="required">Apellidos</label>
                 {{ form.apellidos }}
             </div>
-
-            <!-- Campo obligatorio: correo electronico unico -->
+			
+			<!-- Campo obligatorio: correo electronico unico -->
             <div class="form-group">
                 <label for="id_email" class="required">Correo Electronico</label>
                 {{ form.email }}
             </div>
-
-            <!-- Campo opcional: numero de telefono -->
+			
+			<!-- Campo opcional: numero de telefono -->
             <div class="form-group">
                 <label for="id_telefono">Telefono</label>
                 {{ form.telefono }}
             </div>
-
-            <!-- Campo opcional: direccion fisica -->
+			
+			<!-- Campo opcional: direccion fisica -->
             <div class="form-group">
                 <label for="id_direccion">Direccion</label>
                 {{ form.direccion }}
             </div>
         </div>
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              SECCION 2: CREDENCIALES DE ACCESO
              Campos para modificar el acceso del usuario al sistema.
              - Login: nombre de usuario unico (no editable en edicion).
@@ -131,14 +131,14 @@
                     <i class="fas fa-key"></i> Credenciales de Acceso
                 </div>
             </div>
-
-            <!-- Campo obligatorio: login (nombre de usuario unico) -->
+			
+			<!-- Campo obligatorio: login (nombre de usuario unico) -->
             <div class="form-group">
                 <label for="id_login" class="required">Login</label>
                 {{ form.login }}
             </div>
-
-            <!-- =====================================================
+			
+			<!-- =====================================================
                  Campo OPCIONAL: nueva contraseña.
                  Si se deja en blanco, se mantiene la contraseña actual.
                  Si se introduce un valor, se actualiza la contraseña.
@@ -148,26 +148,26 @@
                 {{ form.nueva_password }}
                 <small style="color: var(--gray);">Dejar en blanco para mantener la actual.</small>
             </div>
-
-            <!-- Campo obligatorio: nivel de acceso (rol del usuario) -->
+			
+			<!-- Campo obligatorio: nivel de acceso (rol del usuario) -->
             <div class="form-group">
                 <label for="id_nivel_acceso" class="required">Nivel de Acceso</label>
                 {{ form.nivel_acceso }}
             </div>
-
-            <!-- =====================================================
+			
+			<!-- =====================================================
                  Campo exclusivo de edicion: estado activo/inactivo del usuario.
                  Checkbox que permite habilitar o deshabilitar la cuenta sin
                  necesidad de eliminarla. Un usuario inactivo no puede iniciar sesion.
                  ===================================================== -->
             <div class="form-group">
-                <label>
+                <label for="id_activo">
                     {{ form.activo }} Usuario Activo
                 </label>
             </div>
         </div>
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              SECCION 3: INFORMACION ADICIONAL
              Campos complementarios no obligatorios.
              - Comentarios: texto libre para notas sobre el usuario.
@@ -181,14 +181,14 @@
                     <i class="fas fa-info-circle"></i> Informacion Adicional
                 </div>
             </div>
-
-            <!-- Campo opcional: comentarios o notas sobre el usuario -->
+			
+			<!-- Campo opcional: comentarios o notas sobre el usuario -->
             <div class="form-group">
                 <label for="id_comentarios">Comentarios</label>
                 {{ form.comentarios }}
             </div>
-
-            <!-- =====================================================
+			
+			<!-- =====================================================
                  Informacion de solo lectura: fechas del usuario.
                  - fecha_creacion: cuando se dio de alta el usuario.
                  - fecha_actualizacion: ultima modificacion realizada.
@@ -198,19 +198,19 @@
                 <p><i class="fas fa-clock"></i> Modificado: {{ usuario.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
             </div>
         </div>
-
-        <!-- =====================================================
+		
+		<!-- =====================================================
              BOTONES DE ACCION DEL FORMULARIO
              - "Guardar Cambios": envia el formulario para actualizar
                los datos del usuario con los cambios introducidos.
              - "Volver": cancela la edicion y retorna al listado.
              ===================================================== -->
         <div class="form-actions">
-            <!-- Boton de submit: guarda los cambios del usuario -->
+			<!-- Boton de submit: guarda los cambios del usuario -->
             <button type="submit" class="btn btn-success">
                 <i class="fas fa-save"></i> Guardar Cambios
             </button>
-            <!-- Boton de cancelar: vuelve al listado de usuarios -->
+			<!-- Boton de cancelar: vuelve al listado de usuarios -->
             <a href="{% url 'usuarios:lista' %}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>

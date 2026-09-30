@@ -44,7 +44,7 @@ class Usuarios(ModeloBase, Activo):
         (2, 'Administrador'),
     ]
     
-    # CAMPOS DEL MODELO
+    # CAMPOS DEL MODELO: modificadores primero (null, blank), luego verbose_name y help_text
     id_usuario = models.IntegerField(
         null=True, # Permite valores NULL (nulo) en la base de datos
         blank=True, # El formulario puede dejarlo vacío y no mostrar error
@@ -98,8 +98,14 @@ class Usuarios(ModeloBase, Activo):
     """
     password = models.CharField(
         max_length=255, # Longitud suficiente para hash SHA-256 (ej: argon2 o PBKDF2)
+        # al marcarlo blank=True, la base de datos deja de exigir un valor en ese campo, 
+        # así que nada impide que exista un usuario con password vacío. 
+        # La red de seguridad pasa a estar en nuestro código: 
+        # save() del formulario siempre hashea, y clean() obliga a escribir contraseña en el alta.
+        # Se deja de momento para evitar un bug existente en la creacion de usuarios
+        blank=True, # El hash lo escribe la vista; nunca se edita en el formulario
         verbose_name='Password', # Nombre en interfaz Django Admin
-        help_text='Contraseña encriptada'  
+        help_text='Contraseña encriptada'
     )
     
     

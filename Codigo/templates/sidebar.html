@@ -53,17 +53,19 @@
 
 			<!-- Enlace Activo: Lista -->
 			<li>
-				<a href="{% url 'usuarios:lista' %}" {% if '/espacios/' in path %}class="active"{% endif %}>
+				<a href="{% url 'espacios:lista' %}" {% if '/espacios/lista' in path %}class="active"{% endif %}>
 					<i class="fa fa-list"></i> Listado de Espacios
 				</a>
 			</li>
-
-			<!-- Enlace Secundario: Crear -->
+			
+			<!-- Enlace Secundario: Crear (solo administradores) -->
+			{% if request.session.usuario_nivel == 2 %}
 			<li>
-				<a href="{% url 'usuarios:crear' %}" {% if '/espacios/crear' in path %}class="active"{% endif %}>
+				<a href="{% url 'espacios:crear' %}" {% if '/espacios/crear' in path %}class="active"{% endif %}>
 					<i class="fa fa-plus-circle"></i> Crear Espacio
 				</a>
 			</li>
+			{% endif %}
 		</ul>
 	</details>
 </aside>
