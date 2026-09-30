@@ -25,7 +25,7 @@
             <div class="stats-cards inline" style="margin-top: 15px;">
                 <div class="card stat-card">
                     <div class="stat-value" style="color: var(--primary);">
-                        {{ total }}
+                        {{ total|default:"0" }}
                     </div>
                     <div class="stat-label">Total</div>
                 </div>
@@ -39,7 +39,7 @@
 
                 <div class="card stat-card">
                     <div class="stat-value" style="color: var(--danger);">
-                        {{ sin_ubicacion" }}
+                        {{ sin_ubicacion|default:"0" }}
                     </div>
                     <div class="stat-label">Sin ubicación</div>
                 </div>
@@ -126,11 +126,11 @@
                     </p>
                     <p>
                         <i class="fas fa-align-left"></i>
-                        {{ espacio.descripcion }}
+                        {{ espacio.descripcion|default:"-"|truncatechars:50 }}
                     </p>
                     <p>
                         <i class="fas fa-calendar"></i>
-                        {{ espacio.fecha_creacion" }}
+                        {{ espacio.fecha_creacion|date:"d/m/Y" }}
                     </p>
                 </div>
 
@@ -170,5 +170,91 @@
     {% endif %}
 
 </div>
+
+<dialog id="dlgLocalizacion" class="card">
+    <form method="post" action="{% url 'espacios:localizacion' %}">
+        {% csrf_token %}
+
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fas fa-map-marked-alt"></i> Editar Localización
+            </div>
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-close-localizacion
+                    title="Cerrar">
+                &times;
+            </button>
+        </div>
+
+        {% if localizacion_form.errors %}
+            <div class="alert alert-danger">
+                {% for field in localizacion_form %}
+					{% for error in field.errors %}
+						<p style="margin: 0;"><strong>{{ field.label }}:</strong> {{ error }}</p>
+					{% endfor %}
+                {% endfor %}
+
+                {% for error in localizacion_form.non_field_errors %}
+                    <p style="margin: 0;">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="{{ localizacion_form.nombre.id_for_label }}" class="required">
+                Nombre
+            </label>
+            {{ localizacion_form.nombre }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ localizacion_form.descripcion.id_for_label }}">
+                Descripción
+            </label>
+            {{ localizacion_form.descripcion }}
+        </div>
+
+        <div class="form-actions" style="margin-top: 15px;">
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-close-localizacion>
+                Cancelar
+            </button>
+
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Guardar
+            </button>
+        </div>
+    </form>
+</dialog>
+
+<script>
+    const dlgLocalizacion = document.getElementById('dlgLocalizacion');
+    const btnEditarLocalizacion = document.getElementById('btnEditarLocalizacion');
+
+    if (btnEditarLocalizacion) {
+        btnEditarLocalizacion.addEventListener('click', function () {
+            dlgLocalizacion.showModal();
+        });
+    }
+
+    document.querySelectorAll('[data-close-localizacion]').forEach(function (boton) {
+        boton.addEventListener('click', function () {
+            dlgLocalizacion.close();
+        });
+    });
+
+    dlgLocalizacion.addEventListener('click', function (evento) {
+        if (evento.target === dlgLocalizacion) {
+            dlgLocalizacion.close();
+        }
+    });
+
+    {% if localizacion_form.errors %}
+        dlgLocalizacion.showModal();
+    {% endif %}
+</script>
 
 {% endblock %}
