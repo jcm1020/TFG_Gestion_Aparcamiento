@@ -53,10 +53,12 @@
                 </button>				
             </form>
 			
-			<!-- Acceso rapido para crear un nuevo usuario -->
+			<!-- Acceso rapido para crear un nuevo usuario (solo administradores) -->
+			{% if request.session.usuario_nivel == 2 %}
             <a href="{% url 'usuarios:crear' %}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> Nuevo Usuario
             </a>
+			{% endif %}
 			
         </div>
 		

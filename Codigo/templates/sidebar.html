@@ -30,12 +30,14 @@
 				</a>
 			</li>
 
-			<!-- Enlace Secundario: Crear -->
+			<!-- Enlace Secundario: Crear (solo administradores) -->
+			{% if request.session.usuario_nivel == 2 %}
 			<li>
 				<a href="{% url 'usuarios:crear' %}" {% if '/usuarios/crear' in path %}class="active"{% endif %}>
 					<i class="fa fa-plus-circle"></i> Crear Usuario
 				</a>
 			</li>
+			{% endif %}
 		</ul>
 	</details>
 

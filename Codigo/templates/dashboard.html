@@ -78,7 +78,9 @@
 			<p>Gestión del núcleo</p>
 			<div class="module-links">
 				<a href="{% url 'usuarios:lista' %}"><i class="fa fa-list"></i> Listado</a>
+				{% if request.session.usuario_nivel == 2 %}
 				<a href="{% url 'usuarios:crear' %}"><i class="fa fa-plus-circle"></i> Crear Usuario</a>
+				{% endif %}
 			</div>
 		</div>
 
@@ -89,20 +91,24 @@
 			<p>Gestión de plazas</p>
 			<div class="module-links">
 				<a href="{% url 'espacios:lista' %}"><i class="fa fa-list"></i> Listado</a>
+				{% if request.session.usuario_nivel == 2 %}
 				<a href="{% url 'espacios:crear' %}"><i class="fa fa-plus-circle"></i> Crear Espacio</a>
+				{% endif %}
 			</div>
 		</div>
 
-		<!-- Tarjeta Nuevo Usuario -->
+		<!-- Tarjeta Nuevo Usuario (solo administradores) -->
+		{% if request.session.usuario_nivel == 2 %}
 		<div class="module-overview-card f1">
 			<span class="icon"><i class="fas fa-user-plus"></i></span>
 			<h4>Nuevo Usuario</h4>
 			<p>Alta de administrador</p>
 			<div class="module-links">
-				<a href="{% url 'usuarios:crear' %}"><i class="fa fa-user-plus"></i> Crear administrador</a>
-				<a href="{% url 'usuarios:lista' %}"><i class="fa fa-users"></i> Ver listado</a>
+				<a href="{% url 'usuarios:crear' %}"><i class="fas fa-user-plus"></i> Crear administrador</a>
+				<a href="{% url 'usuarios:lista' %}"><i class="fas fa-users"></i> Ver listado</a>
 			</div>
 		</div>
+		{% endif %}
 
 	</div>
 		
