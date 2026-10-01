@@ -224,7 +224,8 @@ def crear_usuario(request):
             #    usuario.password = make_password(password)  # Hashea la contraseña
             #else:
             #    usuario.password = make_password('changeme123')  # Default si no puso nada
-
+            
+            usuario = form.save(commit=False)
             usuario.save()
 
             messages.success(request, f'Usuario {usuario.nombre} creado correctamente.')
