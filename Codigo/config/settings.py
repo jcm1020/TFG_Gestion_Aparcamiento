@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     'apps.usuarios', #Añadida aplicacion usuarios
     'apps.espacios', #Añadida aplicacion espacios
+    'apps.camaras', #Añadida aplicacion camaras
 ]
 
 MIDDLEWARE = [
